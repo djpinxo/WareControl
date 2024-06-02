@@ -1,17 +1,24 @@
 package net.ddns.djpinxo.warecontrol.data.daosimplements.api;
 
+import android.graphics.Bitmap;
+import android.media.Image;
+
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 
 import java.util.List;
 
+import okhttp3.MultipartBody;
+import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.http.Body;
 import retrofit2.http.DELETE;
 import retrofit2.http.GET;
+import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PUT;
+import retrofit2.http.Part;
 import retrofit2.http.Path;
 
 public interface ApiService {
@@ -38,6 +45,13 @@ public interface ApiService {
     Call <Item> updateItem(@Path("id") long id, @Body Item item);
     @DELETE("items/{id}")
     Call <Void> deleteItem(@Path("id") long id);
+
+    //@Multipart
+    @GET("items/{id}/imagen")
+    Call <ResponseBody> getItemImagen(@Path("id") long id);
+    @Multipart
+    @POST("items/{id}/imagen")
+    Call <Void> insertItemImagen(@Path("id") long id, @Part MultipartBody.Part imagen);
 
 
     @GET("contenedores")

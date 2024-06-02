@@ -3,6 +3,7 @@ package net.ddns.djpinxo.warecontrol.ui.item;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -39,6 +40,7 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
     private EditText editTextNombre;
     private EditText editTextDescripcion;
     private EditText editTextContenedor;
+    private ImageButton buttonImagen;
     private Button buttonInsert;
     private Button buttonCancel;
     private Item itemModel;
@@ -60,6 +62,7 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
         editTextContenedor = view.findViewById(R.id.editTextContenedor);
+        buttonImagen = view.findViewById(R.id.buttonImagen);
         buttonInsert = view.findViewById(R.id.buttonInsert);
         buttonCancel = view.findViewById(R.id.buttonCancel);
 
@@ -103,6 +106,7 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
         ImageButton buttonInfo = view.findViewById(R.id.buttonInfo);
         ImageButton buttonSearch = view.findViewById(R.id.buttonSearch);
         ImageButton buttonScan = view.findViewById(R.id.buttonScan);
+        ImageButton buttonImagen = view.findViewById(R.id.buttonImagen);
         buttonInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -130,6 +134,16 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
                     requestCameraPermission();
                 }
                 //showScanModal();
+            }
+        });
+        buttonImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkCameraPermission()) {
+                    showCaptureModal();
+                } else {
+                    requestCameraPermission();
+                }
             }
         });
 
@@ -208,6 +222,10 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
         //contenedorModalScan.setTargetFragment(this, 1);
         modalScanContenedor.show(getParentFragmentManager(), "ContenedorScan");
     }
+    private void showCaptureModal() {
+        ModalInsertItemImagenFragment modalInsertItemImagenFragment = new ModalInsertItemImagenFragment(itemModel, getActivity(), buttonImagen);
+        modalInsertItemImagenFragment.show(getParentFragmentManager(), "ItemCapture");
+    }
     private boolean checkCameraPermission() {
         return getActivity().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
     }
@@ -260,6 +278,9 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
     public void callbackDataAcessSuccess(Item item) {
         Toast.makeText(getContext(), R.string.item_inserted_dialog, Toast.LENGTH_LONG).show();
         itemModel=item;
+        if(buttonImagen.getContentDescription().equals("imagen modificada")){
+            new ModalInsertItemImagenFragment(item, getActivity(), buttonImagen).insertItemImagen();
+        }
         SelectItemFragment selectItemFragment=new SelectItemFragment(itemModel);
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
     }

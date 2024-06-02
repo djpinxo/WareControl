@@ -1,5 +1,7 @@
 package net.ddns.djpinxo.warecontrol.data.daosimplements.local;
 
+import android.widget.ImageView;
+
 import net.ddns.djpinxo.warecontrol.data.daos.ItemDao;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
@@ -7,6 +9,8 @@ import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import okhttp3.ResponseBody;
 
 public class ItemDaoLocalBBDDImplements implements ItemDao {
 
@@ -114,4 +118,15 @@ public class ItemDaoLocalBBDDImplements implements ItemDao {
         else
             fragmentCallback.callbackDataAcessError(false);
     }
+
+    @Override
+    public void getItemImagen(FragmentCallback<ResponseBody> fragmentCallback, long id) {
+
+    }
+
+    @Override
+    public void insertItemImagen(FragmentCallback<String> fragmentCallback, long id, ImageView imageView) {
+
+    }
+
 }

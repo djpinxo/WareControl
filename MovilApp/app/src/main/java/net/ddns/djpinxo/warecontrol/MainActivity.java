@@ -64,7 +64,7 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        ApiClient.getClient(this);
+        ApiClient.getClient(getString(R.string.ApiURL), userLogin);
 
         if (userLogin==null){
             loadLoginLayout();

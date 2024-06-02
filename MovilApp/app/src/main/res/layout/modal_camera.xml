@@ -1,0 +1,29 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="300dp"
+    android:layout_height="500dp"
+    android:layout_centerInParent="true">
+
+    <androidx.camera.view.PreviewView
+        android:id="@+id/previewView"
+        android:layout_width="300dp"
+        android:layout_height="300dp"
+        android:layout_alignParentTop="true"/>
+    <ImageButton
+        android:id="@+id/buttonCapture"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
+        android:src="@drawable/camara"
+        android:layout_margin="8dp"
+        style="@style/botonCamara"
+        android:layout_centerHorizontal="true"
+        android:layout_above="@id/buttonCancel"
+        />
+    <Button
+        android:id="@+id/buttonCancel"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="8dp"
+        android:text="@string/cancel" />
+</RelativeLayout>

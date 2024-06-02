@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,7 +22,6 @@ import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
 import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalSelectContenedor;
-import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalViewContenedor;
 
 public class SelectItemFragment extends Fragment implements FragmentCallback<Item> {
 
@@ -29,6 +29,8 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
     private EditText editTextNombre;
     private EditText editTextDescripcion;
     private EditText editTextContenedor;
+
+    private ImageView buttonImagen;
     private Button buttonUpdate;
     private Button buttonDelete;
     private Button buttonBack;
@@ -60,6 +62,7 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
         editTextContenedor = view.findViewById(R.id.editTextContenedor);
+        buttonImagen = view.findViewById(R.id.buttonImagen);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
         buttonDelete = view.findViewById(R.id.buttonDelete);
         buttonBack = view.findViewById(R.id.buttonBack);
@@ -121,6 +124,8 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
         if(itemModel.getContenedor()!=null) {
             editTextContenedor.setText(itemModel.getContenedor().getId().toString());
         }
+        //recuperar imagen
+        new SelectItemImagenFragment(itemModel, this.getActivity(), buttonImagen).getItemImagen();
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 

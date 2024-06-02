@@ -34,6 +34,7 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
     private EditText editTextNombre;
     private EditText editTextDescripcion;
     private EditText editTextContenedor;
+    private ImageButton buttonImagen;
     private Button buttonUpdate;
     private Button buttonCancel;
     private static Item itemModel;
@@ -67,6 +68,7 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
         editTextContenedor = view.findViewById(R.id.editTextContenedor);
+        buttonImagen = view.findViewById(R.id.buttonImagen);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
         buttonCancel = view.findViewById(R.id.buttonCancel);
 
@@ -110,6 +112,7 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
         ImageButton buttonInfo = view.findViewById(R.id.buttonInfo);
         ImageButton buttonSearch = view.findViewById(R.id.buttonSearch);
         ImageButton buttonScan = view.findViewById(R.id.buttonScan);
+        ImageButton buttonImagen = view.findViewById(R.id.buttonImagen);
         buttonInfo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -138,6 +141,16 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
                 }
             }
         });
+        buttonImagen.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkCameraPermission()) {
+                    showCaptureModal();
+                } else {
+                    requestCameraPermission();
+                }
+            }
+        });
 
     }
 
@@ -159,6 +172,10 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
     private void showScanModal() {
         ModalScanContenedor modalScanContenedor = new ModalScanContenedor();
         modalScanContenedor.show(getParentFragmentManager(), "ContenedorScan");
+    }
+    private void showCaptureModal() {
+        ModalInsertItemImagenFragment modalInsertItemImagenFragment = new ModalInsertItemImagenFragment(itemModel, getActivity(), buttonImagen);
+        modalInsertItemImagenFragment.show(getParentFragmentManager(), "ItemCapture");
     }
     private boolean checkCameraPermission() {
         return getActivity().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
@@ -239,10 +256,17 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
         }
         if(isUpdating) {
             Toast.makeText(getContext(), R.string.item_updated_dialog, Toast.LENGTH_LONG).show();
+            //TODO subir imagen
+            if(buttonImagen.getContentDescription().equals("imagen modificada")){
+                new ModalInsertItemImagenFragment(item, getActivity(), buttonImagen).insertItemImagen();
+            }
+            //fin
             SelectItemFragment selectItemFragment = new SelectItemFragment(itemModel);
             ((MainActivity) getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
         }
         else if (!isUpdating) {
+            //recuperar imagen
+            new SelectItemImagenFragment(itemModel, this.getActivity(), buttonImagen).getItemImagen();
             ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
         }
         isUpdating=false;

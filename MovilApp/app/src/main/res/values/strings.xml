@@ -73,5 +73,6 @@
     <string name="detail">Detail</string>
     <string name="childcontainer">Container Childs</string>
     <string name="items">Items</string>
+    <string name="view">List</string>
 
 </resources>

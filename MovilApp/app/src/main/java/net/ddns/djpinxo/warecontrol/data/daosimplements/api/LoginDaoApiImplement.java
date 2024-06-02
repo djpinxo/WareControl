@@ -3,6 +3,7 @@ package net.ddns.djpinxo.warecontrol.data.daosimplements.api;
 
 import android.util.Log;
 
+import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.data.daos.UserDao;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
@@ -23,7 +24,7 @@ public class LoginDaoApiImplement {
 
 
     public void loginUser(FragmentCallback<User> fragmentCallback, User user) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <User> call = apiService.loginUser(user);
 
 
@@ -47,7 +48,7 @@ public class LoginDaoApiImplement {
     }
 
     public void registerUser(FragmentCallback<User> fragmentCallback, User user) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <User> call = apiService.registerUser(user);
 
 

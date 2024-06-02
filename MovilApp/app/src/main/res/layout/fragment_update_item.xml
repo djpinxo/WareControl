@@ -11,12 +11,25 @@
         android:layout_height="match_parent"
         android:padding="16dp">
 
+        <ImageButton
+            android:id="@+id/buttonImagen"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:src="@drawable/camara"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/update"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginBottom="8dp"
+            android:layout_margin="20dp"
+            />
         <TextView
             android:id="@+id/textViewId"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/id"
-            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/buttonImagen"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
 
@@ -144,7 +157,6 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="0dp">
-
             <Button
                 android:id="@+id/buttonUpdate"
                 android:layout_width="0dp"
@@ -152,7 +164,6 @@
                 android:layout_weight="1"
                 android:layout_margin="8dp"
                 android:text="@string/update" />
-
             <Button
                 android:id="@+id/buttonCancel"
                 android:layout_width="0dp"

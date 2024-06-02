@@ -3,6 +3,7 @@ package net.ddns.djpinxo.warecontrol.data.daosimplements.api;
 
 import android.util.Log;
 
+import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.data.daos.ContenedorDao;
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
@@ -22,7 +23,7 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
 
     @Override
     public void getContenedores(FragmentCallback<List<Contenedor>> fragmentCallback) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <List<Contenedor>> call = apiService.getContenedores();
 
 
@@ -47,7 +48,7 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
 
     @Override
     public void getContenedor(FragmentCallback<Contenedor> fragmentCallback, long id) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <Contenedor> call = apiService.getContenedor(id);
 
 
@@ -72,7 +73,7 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
 
     @Override
     public void insertContenedor(FragmentCallback<Contenedor> fragmentCallback, Contenedor contenedor) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <Contenedor> call = apiService.insertContenedor(contenedor);
 
 
@@ -97,7 +98,7 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
 
     @Override
     public void updateContenedor(FragmentCallback<Contenedor> fragmentCallback, Contenedor contenedor) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <Contenedor> call = apiService.updateContenedor(contenedor.getId(), contenedor);
 
 
@@ -122,7 +123,7 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
 
     @Override
     public void deleteContenedor(FragmentCallback<Boolean> fragmentCallback, long id) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <Void> call = apiService.deleteContenedor(id);
 
 
@@ -147,7 +148,7 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
 
     @Override
     public void getContenedorItems(FragmentCallback<List<Item>> fragmentCallback, long id) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <List<Item>> call = apiService.getContenedorItems(id);
 
 
@@ -172,7 +173,7 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
 
     @Override
     public void getContenedorContenedorHijos(FragmentCallback<List<Contenedor>> fragmentCallback, long id) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <List<Contenedor>> call = apiService.getContenedorContenedorHijos(id);
 
 

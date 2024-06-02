@@ -26,4 +26,12 @@
     <style name="logoBackGroundAlpha">
         <item name="android:alpha">0.1</item>
     </style>
+
+    <style name="botonCamara">
+        <item name="android:radius">50dp</item>
+        <item name="android:height">100dp</item>
+        <item name="android:width">100dp</item>
+        <item name="android:layout_height">100dp</item>
+        <item name="android:layout_width">100dp</item>
+    </style>
 </resources>

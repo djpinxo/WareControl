@@ -26,6 +26,9 @@ public class ModalViewContenedorContenedorHijos extends DialogFragment implement
     private RecyclerView recyclerViewModal;
     private ModalAdapterContenedorContenedorHijosList adapter;
 
+    public ModalViewContenedorContenedorHijos(){
+        super();
+    }
     public ModalViewContenedorContenedorHijos(Contenedor contenedorModel) {
         super();
         this.contenedorModel=contenedorModel;

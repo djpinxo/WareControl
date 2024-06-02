@@ -3,6 +3,7 @@ package net.ddns.djpinxo.warecontrol.data.daosimplements.api;
 
 import android.util.Log;
 
+import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.data.daos.UserDao;
 import net.ddns.djpinxo.warecontrol.data.model.User;
@@ -21,7 +22,7 @@ public class UserDaoApiImplement implements UserDao {
 
     @Override
     public void getUsers(FragmentCallback<List<User>> fragmentCallback) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <List<User>> call = apiService.getUsers();
 
 
@@ -46,7 +47,7 @@ public class UserDaoApiImplement implements UserDao {
 
     @Override
     public void getUser(FragmentCallback<User> fragmentCallback, String email) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <User> call = apiService.getUser(email);
 
 
@@ -71,7 +72,7 @@ public class UserDaoApiImplement implements UserDao {
 
     @Override
     public void insertUser(FragmentCallback<User> fragmentCallback, User user) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <User> call = apiService.insertUser(user);
 
 
@@ -96,7 +97,7 @@ public class UserDaoApiImplement implements UserDao {
 
     @Override
     public void updateUser(FragmentCallback<User> fragmentCallback, User user) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <User> call = apiService.updateUser(user.getEmail(), user);
 
 
@@ -121,7 +122,7 @@ public class UserDaoApiImplement implements UserDao {
 
     @Override
     public void deleteUser(FragmentCallback<Boolean> fragmentCallback, String email) {
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <Void> call = apiService.deleteUser(email);
 
 

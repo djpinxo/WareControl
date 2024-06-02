@@ -26,13 +26,14 @@ import net.ddns.djpinxo.warecontrol.ui.item.SelectItemFragment;
 
 public class ModalSelectContenedor extends DialogFragment implements FragmentCallback<Contenedor> {
     private static Contenedor contenedorModel;
-    private Activity activity;
-    private AlertDialog dialog;
-
     private EditText editTextId;
     private EditText editTextNombre;
     private EditText editTextDescripcion;
     private EditText editTextContenedorPadre;
+
+    public ModalSelectContenedor(){
+        super();
+    }
 
     public ModalSelectContenedor(Contenedor contenedorModel) {
         super();
@@ -84,6 +85,6 @@ public class ModalSelectContenedor extends DialogFragment implements FragmentCal
     }
 
     public void callbackDataAcessError(Contenedor contenedor){
-        Toast.makeText(activity, R.string.error_dialog, Toast.LENGTH_LONG).show();
+        Toast.makeText(getActivity(), R.string.error_dialog, Toast.LENGTH_LONG).show();
     }
 }
