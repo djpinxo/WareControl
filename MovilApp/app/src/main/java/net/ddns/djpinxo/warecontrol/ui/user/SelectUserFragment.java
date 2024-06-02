@@ -10,6 +10,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 
@@ -23,6 +24,10 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
     private EditText editTextNombre;
     private EditText editTextEmail;
     private EditText editTextPassword;
+    private EditText editTextInsertDate;
+    private EditText editTextLastLogin;
+    private CheckBox checkBoxActive;
+    private CheckBox checkBoxAdmin;
     private Button buttonUpdate;
     private Button buttonDelete;
     private Button buttonBack;
@@ -53,6 +58,10 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
+        editTextInsertDate = view.findViewById(R.id.editTextInsertDate);
+        editTextLastLogin = view.findViewById(R.id.editTextLastLogin);
+        checkBoxActive = view.findViewById(R.id.checkBoxActive);
+        checkBoxAdmin = view.findViewById(R.id.checkBoxAdmin);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
         buttonDelete = view.findViewById(R.id.buttonDelete);
         buttonBack = view.findViewById(R.id.buttonBack);
@@ -90,6 +99,10 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
         editTextEmail.setText(userModel.getEmail());
         editTextNombre.setText(userModel.getNombre());
         editTextPassword.setText(userModel.getPassword());
+        editTextInsertDate.setText(userModel.getInsertDate());
+        editTextLastLogin.setText(userModel.getLastLogin());
+        checkBoxActive.setChecked(userModel.isActive());
+        checkBoxAdmin.setChecked(userModel.isAdmin());
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 

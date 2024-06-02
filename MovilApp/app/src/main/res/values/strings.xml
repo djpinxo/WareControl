@@ -56,5 +56,16 @@
     <string name="item_delete_title">Delete item</string>
     <string name="contenedor_delete_title">Delete container</string>
 
+    <string name="welcome">Welcome</string>
+
+    <string name="insertdate">Insert date</string>
+    <string name="lastlogin">Last login</string>
+    <string name="active">Active</string>
+    <string name="admin">Administrator</string>
+
+    <string name="logout_dialog">User disconnect</string>
+
+    <string name="logout_title">Logout</string>
+    <string name="user_details_title">Manage user</string>
 
 </resources>

@@ -113,14 +113,14 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
 
         boolean result=true;
         if(name.isEmpty()) {
-            editTextNombre.setError(R.string.name + " " + R.string.required_dialog);
+            editTextNombre.setError(getString(R.string.name) + " " + getString(R.string.required_dialog));
             result = false;
         }
         if(!sIdContenedor.isEmpty()){
             try{
                 Long.valueOf(sIdContenedor);
             }catch (NumberFormatException e) {
-                editTextContenedor.setError(R.string.dadcontainer+ " " + R.string.notnumeric_dialog);
+                editTextContenedor.setError(getString(R.string.dadcontainer)+ " " + getString(R.string.notnumeric_dialog));
                 result = false;
             }
         }

@@ -1,165 +1,79 @@
-package net.ddns.djpinxo.warecontrol.ui.login;
+/*package net.ddns.djpinxo.warecontrol.ui.login;
 
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProvider;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
-
-import android.os.Bundle;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.view.KeyEvent;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.view.inputmethod.EditorInfo;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.ProgressBar;
-import android.widget.TextView;
+import android.app.Activity;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.widget.Toast;
 
-
+import net.ddns.djpinxo.warecontrol.data.model.User;
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
+import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
-import net.ddns.djpinxo.warecontrol.databinding.FragmentLoginBinding;
-import net.ddns.djpinxo.warecontrol.ui.user.UserFragment;
-import net.ddns.djpinxo.warecontrol.ui.user.ViewUserFragment;
 
-public class LoginFragment extends Fragment {
+public class LoginFragment implements FragmentCallback<User> {
 
-    private LoginViewModel loginViewModel;
-    private FragmentLoginBinding binding;
+    //creado por mantener una estructura aun que no sea fragment
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             @Nullable ViewGroup container,
-                             @Nullable Bundle savedInstanceState) {
+    Activity activity;
 
-        binding = FragmentLoginBinding.inflate(inflater, container, false);
-        return binding.getRoot();
+    private User userLogin;
+
+    public LoginFragment(){
+        super();
+    }
+    public LoginFragment (User userLogin){
+        this();
+        this.userLogin=userLogin;
 
     }
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
-        loginViewModel = new ViewModelProvider(this, new LoginViewModelFactory())
-                .get(LoginViewModel.class);
+    public void sendLogin(){
+        String email = userLogin.getEmail().toString().trim();
+        String password = userLogin.getPassword().toString().trim();
 
-        final EditText usernameEditText = binding.username;
-        final EditText passwordEditText = binding.password;
-        final Button loginButton = binding.login;
-        final ProgressBar loadingProgressBar = binding.loading;
-
-        loginViewModel.getLoginFormState().observe(getViewLifecycleOwner(), new Observer<LoginFormState>() {
-            @Override
-            public void onChanged(@Nullable LoginFormState loginFormState) {
-                if (loginFormState == null) {
-                    return;
-                }
-                loginButton.setEnabled(loginFormState.isDataValid());
-                if (loginFormState.getUsernameError() != null) {
-                    usernameEditText.setError(getString(loginFormState.getUsernameError()));
-                }
-                if (loginFormState.getPasswordError() != null) {
-                    passwordEditText.setError(getString(loginFormState.getPasswordError()));
-                }
-            }
-        });
-
-        loginViewModel.getLoginResult().observe(getViewLifecycleOwner(), new Observer<LoginResult>() {
-            @Override
-            public void onChanged(@Nullable LoginResult loginResult) {
-                if (loginResult == null) {
-                    return;
-                }
-                loadingProgressBar.setVisibility(View.GONE);
-                if (loginResult.getError() != null) {
-                    showLoginFailed(loginResult.getError());
-                }
-                if (loginResult.getSuccess() != null) {
-                    updateUiWithUser(loginResult.getSuccess());
-
-
-
-                    //TODO nuevo salto a otra pantalla
-                    FragmentTransaction transaction=getActivity().getSupportFragmentManager().beginTransaction();
-                    ViewUserFragment viewUserFragment=new ViewUserFragment();
-
-                    transaction.replace(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
-                    transaction.commit();
-
-
-                }
-            }
-        });
-
-        TextWatcher afterTextChangedListener = new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-                // ignore
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                // ignore
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-                loginViewModel.loginDataChanged(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        };
-        usernameEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.addTextChangedListener(afterTextChangedListener);
-        passwordEditText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                if (actionId == EditorInfo.IME_ACTION_DONE) {
-                    loginViewModel.login(usernameEditText.getText().toString(),
-                            passwordEditText.getText().toString());
-                }
-                return false;
-            }
-        });
-
-        loginButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                loadingProgressBar.setVisibility(View.VISIBLE);
-                loginViewModel.login(usernameEditText.getText().toString(),
-                        passwordEditText.getText().toString());
-            }
-        });
-    }
-
-    private void updateUiWithUser(LoggedInUserView model) {
-        String welcome = getString(R.string.welcome) + model.getDisplayName();
-        // TODO : initiate successful logged in experience
-        if (getContext() != null && getContext().getApplicationContext() != null) {
-            Toast.makeText(getContext().getApplicationContext(), welcome, Toast.LENGTH_LONG).show();
+        if(validateUserForm()){
+            User userModel=new User(email, null, password);
+            MainActivity.loginDao.loginUser(this, userModel);
+        }
+        else {
+            //Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
         }
     }
 
-    private void showLoginFailed(@StringRes Integer errorString) {
-        if (getContext() != null && getContext().getApplicationContext() != null) {
-            Toast.makeText(
-                    getContext().getApplicationContext(),
-                    errorString,
-                    Toast.LENGTH_LONG).show();
+    private boolean validateUserForm() {
+        String email = userLogin.getEmail().toString().trim();
+        String password = userLogin.getPassword().toString().trim();
+
+        boolean result = true;
+        if(email.isEmpty()) {
+            //editTextEmail.setError(R.string.email + " " + R.string.required_dialog);
+            result = false;
         }
+        if(password.isEmpty()) {
+            //editTextPassword.setError(R.string.password + " " + R.string.required_dialog);
+            result = false;
+        }
+
+        return result;
     }
 
     @Override
-    public void onDestroyView() {
-        super.onDestroyView();
-        binding = null;
+    public void callbackDataAcessSuccess(User user) {
+        userLogin = user;
+        //editTextEmail.setText(userModel.getEmail());
+        //editTextNombre.setText(userModel.getNombre());
+        //editTextPassword.setText(userModel.getPassword());
+        Toast.makeText(activity.getBaseContext(), R.string.welcome, Toast.LENGTH_LONG).show();
+        //SelectUserFragment selectUserFragment = new SelectUserFragment(userModel);
+        //((MainActivity) getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+        ((MainActivity)activity).loadMainActivityLayout();
+
+
+    }
+
+    @Override
+    public void callbackDataAcessError(User user) {
+        Toast.makeText(activity.getBaseContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
     }
 }
+*/

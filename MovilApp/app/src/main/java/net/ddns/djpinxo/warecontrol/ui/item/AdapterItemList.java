@@ -13,9 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
-import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
-import net.ddns.djpinxo.warecontrol.ui.contenedor.SelectContenedorFragment;
 
 import java.util.List;
 
@@ -73,8 +71,8 @@ public class AdapterItemList extends RecyclerView.Adapter<AdapterItemList.ViewHo
             textViewId.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SelectContenedorFragment selectContenedorFragment=new SelectContenedorFragment(new Contenedor(Long.valueOf(textViewId.getText().toString()), null, null, null, null, null));
-                    ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectContenedorFragment);
+                    SelectItemFragment selectItemFragment=new SelectItemFragment(new Item(Long.valueOf(textViewId.getText().toString()), null, null, null));
+                    ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
 
                 }
 
@@ -83,8 +81,8 @@ public class AdapterItemList extends RecyclerView.Adapter<AdapterItemList.ViewHo
             textViewNombre.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    SelectContenedorFragment selectContenedorFragment=new SelectContenedorFragment(new Contenedor(Long.valueOf(textViewId.getText().toString()), null, null, null, null, null));
-                    ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectContenedorFragment);
+                    SelectItemFragment selectItemFragment=new SelectItemFragment(new Item(Long.valueOf(textViewId.getText().toString()), null, null, null));
+                    ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
 
                 }
 

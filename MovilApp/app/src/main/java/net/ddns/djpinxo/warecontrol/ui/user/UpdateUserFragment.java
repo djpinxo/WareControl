@@ -12,6 +12,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -20,6 +21,7 @@ import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
+import net.ddns.djpinxo.warecontrol.utils.HashUtils;
 
 public class UpdateUserFragment extends Fragment implements FragmentCallback<User> {
 
@@ -27,6 +29,10 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextRepeatPassword;
+    private EditText editTextInsertDate;
+    private EditText editTextLastLogin;
+    private CheckBox checkBoxActive;
+    private CheckBox checkBoxAdmin;
     private Button buttonUpdate;
     private Button buttonCancel;
     private static User userModel;
@@ -40,7 +46,6 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         this.userModel=userModel;
         isUpdating=false;
         MainActivity.userDao.getUser(this, userModel.getEmail());
-
     }
 
     @Override
@@ -60,6 +65,10 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
         editTextRepeatPassword = view.findViewById(R.id.editTextRepeatPassword);
+        editTextInsertDate = view.findViewById(R.id.editTextInsertDate);
+        editTextLastLogin = view.findViewById(R.id.editTextLastLogin);
+        checkBoxActive = view.findViewById(R.id.checkBoxActive);
+        checkBoxAdmin = view.findViewById(R.id.checkBoxAdmin);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
         buttonCancel = view.findViewById(R.id.buttonCancel);
 
@@ -105,11 +114,20 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+        String insertDate = editTextInsertDate.getText().toString().trim();
+        String lastLogin = editTextLastLogin.getText().toString().trim();
+        boolean isActive = checkBoxActive.isChecked();
+        boolean isAdmin = checkBoxAdmin.isChecked();
 
         if(validateUserForm()){
-            //userModel=new User(email, name, password);
+            //userModel=new User(email, name, password, isAdmin, isActive);
             userModel.setNombre(name);
+            //Se verifica si la contraseña ha cambiado, si no lo hizo no volver a lanzar el hash
+            if(!password.equals(userModel.getPassword()))
+                password = HashUtils.hashString(password);
             userModel.setPassword(password);
+            userModel.setActive(isActive);
+            userModel.setAdmin(isAdmin);
             isUpdating=true;
             MainActivity.userDao.updateUser(this, userModel);
         }
@@ -123,30 +141,34 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+        String insertDate = editTextInsertDate.getText().toString().trim();
+        String lastLogin = editTextLastLogin.getText().toString().trim();
+        boolean isActive = checkBoxActive.isChecked();
+        boolean isAdmin = checkBoxAdmin.isChecked();
 
         boolean result = true;
         if(email.isEmpty()) {
-            editTextEmail.setError(R.string.email + " " + R.string.required_dialog);
+            editTextEmail.setError(getString(R.string.email) + " " + getString(R.string.required_dialog));
             result = false;
         }
         if(!email.equals(userModel.getEmail())) {
-            editTextEmail.setError(R.string.email + " " + "introducido no concuerda con el original");
+            editTextEmail.setError(getString(R.string.email) + " " + "introducido no concuerda con el original");
             result = false;
         }
         if(name.isEmpty()) {
-            editTextNombre.setError(R.string.name + " " + R.string.required_dialog);
+            editTextNombre.setError(getString(R.string.name) + " " + getString(R.string.required_dialog));
             result = false;
         }
         if(password.isEmpty()) {
-            editTextPassword.setError(R.string.password + " " + R.string.required_dialog);
+            editTextPassword.setError(getString(R.string.password) + " " + getString(R.string.required_dialog));
             result = false;
         }
         if(repeatPassword.isEmpty()) {
-            editTextRepeatPassword.setError(R.string.repeatpassword + " " + R.string.required_dialog);
+            editTextRepeatPassword.setError(getString(R.string.repeatpassword) + " " + getString(R.string.required_dialog));
             result = false;
         }
         if(result && !password.equals(repeatPassword)) {
-            editTextRepeatPassword.setError("la "+R.string.password+" tiene que coincidir en los dos campos");
+            editTextRepeatPassword.setError("la "+getString(R.string.password)+" tiene que coincidir en los dos campos");
             result = false;
         }
 
@@ -159,6 +181,11 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         editTextEmail.setText(userModel.getEmail());
         editTextNombre.setText(userModel.getNombre());
         editTextPassword.setText(userModel.getPassword());
+        editTextRepeatPassword.setText(userModel.getPassword());
+        editTextInsertDate.setText(userModel.getInsertDate());
+        editTextLastLogin.setText(userModel.getLastLogin());
+        checkBoxActive.setChecked(userModel.isActive());
+        checkBoxAdmin.setChecked(userModel.isAdmin());
         if(isUpdating) {
             Toast.makeText(getContext(), R.string.user_updated_dialog, Toast.LENGTH_LONG).show();
             SelectUserFragment selectUserFragment = new SelectUserFragment(userModel);

@@ -129,30 +129,30 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
 
         boolean result = true;
         if(sId.isEmpty()) {
-            editTextId.setError(R.string.id + " " + R.string.required_dialog);
+            editTextId.setError(getString(R.string.id) + " " + getString(R.string.required_dialog));
             result = false;
         }
         if(!sId.isEmpty()){
             try{
                 Long.valueOf(sId);
             }catch (NumberFormatException e) {
-                editTextId.setError(R.string.dadcontainer+ " " + R.string.notnumeric_dialog);
+                editTextId.setError(getString(R.string.dadcontainer)+ " " + getString(R.string.notnumeric_dialog));
                 result = false;
             }
         }
         if(!sId.equals(itemModel.getId().toString())) {
-            editTextId.setError(R.string.id + " " + "introducido no concuerda con el original");
+            editTextId.setError(getString(R.string.id) + " " + "introducido no concuerda con el original");
             result = false;
         }
         if(name.isEmpty()) {
-            editTextNombre.setError(R.string.name + " " + R.string.required_dialog);
+            editTextNombre.setError(getString(R.string.name) + " " + getString(R.string.required_dialog));
             result = false;
         }
         if(!sIdContenedor.isEmpty()){
             try{
                 Long.valueOf(sIdContenedor);
             }catch (NumberFormatException e) {
-                editTextContenedor.setError(R.string.dadcontainer+ " " + R.string.notnumeric_dialog);
+                editTextContenedor.setError(getString(R.string.dadcontainer)+ " " + getString(R.string.notnumeric_dialog));
                 result = false;
             }
         }

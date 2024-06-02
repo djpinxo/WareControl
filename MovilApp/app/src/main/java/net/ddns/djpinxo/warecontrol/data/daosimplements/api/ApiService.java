@@ -51,4 +51,7 @@ public interface ApiService {
     @DELETE("contenedores/{id}")
     Call <Void> deleteContenedor(@Path("id") long id);
 
+    @POST("login")
+    Call <User> loginUser(@Body User user);
+
 }
