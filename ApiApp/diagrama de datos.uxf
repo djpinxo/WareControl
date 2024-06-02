@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="15.1.0">
+  <zoom_level>5</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>5</x>
+      <y>35</y>
+      <w>190</w>
+      <h>185</h>
+    </coordinates>
+    <panel_attributes>_Contenedor: Class_
+--
+-id: Long
+-nombre: String
+-descripcion: String
+-contenedorPadre: Contenedor
+-items: List&lt;Item&gt;
+--
++Long getId(): Long
++setId(id:Long)
++getNombre(): String
++setNombre(nombre:String)
++getDescripcion(): String
++setDescripcion(descripcion:String)
++getContenedorPadre(): Contenedor
++setContenedorPadre(contenedorPadre:Contenedor)
++getContenedorHijos(): List&lt;Contenedor&gt;
++setContenedorHijos(contenedorHijos:List&lt;Contenedor&gt;)
++getItems(): List&lt;Item&gt;
++setItems(items:List&lt;Item&gt;)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>90</x>
+      <y>15</y>
+      <w>145</w>
+      <h>75</h>
+    </coordinates>
+    <panel_attributes>lt=-
+m1=0..n
+m2=0..1</panel_attributes>
+    <additional_attributes>210.0;120.0;270.0;120.0;270.0;10.0;10.0;10.0;10.0;40.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>435</x>
+      <y>30</y>
+      <w>190</w>
+      <h>185</h>
+    </coordinates>
+    <panel_attributes>_Item: Class_
+--
+-id: Long
+-nombre: String
+-descripcion: String
+-contenedorPadre: Contenedor
+--
++Long getId(): Long
++setId(id:Long)
++getNombre(): String
++setNombre(nombre:String)
++getDescripcion(): String
++setDescripcion(descripcion:String)
++getContenedor(): Contenedor
++setContenedor(contenedor:Contenedor)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>190</x>
+      <y>5</y>
+      <w>350</w>
+      <h>95</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m1=0..n</panel_attributes>
+    <additional_attributes>10.0;160.0;120.0;160.0;120.0;10.0;680.0;10.0;680.0;50.0</additional_attributes>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>170</x>
+      <y>450</y>
+      <w>190</w>
+      <h>185</h>
+    </coordinates>
+    <panel_attributes>_Usuario: Class_
+--
+-email: String
+-nombre: String
+-password: String
+--
++getEmail(): String
++setEmail(email:String)
++getNombre(): String
++setNombre(nombre:String)
++getPassword(): String
++setPassword(password:String)
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+</diagram>
