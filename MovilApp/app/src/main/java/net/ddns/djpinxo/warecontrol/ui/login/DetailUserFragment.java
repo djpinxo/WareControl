@@ -1,4 +1,4 @@
-package net.ddns.djpinxo.warecontrol.ui.user;
+package net.ddns.djpinxo.warecontrol.ui.login;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
@@ -18,12 +18,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
+import net.ddns.djpinxo.warecontrol.ui.login.DeleteUserFragment;
+import net.ddns.djpinxo.warecontrol.utils.HashUtils;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
-import net.ddns.djpinxo.warecontrol.utils.HashUtils;
 
-public class InsertUserFragment extends Fragment implements FragmentCallback <User> {
+public class DetailUserFragment extends Fragment implements FragmentCallback<User> {
 
     private EditText editTextNombre;
     private EditText editTextEmail;
@@ -32,11 +33,20 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
     private EditText editTextInsertDate;
     private EditText editTextLastLogin;
     private EditText editTextUpdateDate;
-    private CheckBox checkBoxActive;
-    private CheckBox checkBoxAdmin;
-    private Button buttonInsert;
-    private Button buttonCancel;
-    private User userModel;
+    private Button buttonUpdate;
+    private Button buttonDelete;
+    private static User userModel;
+    private boolean isUpdating=false;
+
+    public DetailUserFragment(){
+        super();
+    }
+    public DetailUserFragment(User userModel){
+        this();
+        this.userModel=userModel;
+        isUpdating=false;
+        MainActivity.userDao.getUser(this, userModel.getEmail());
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -45,12 +55,12 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_insert_user, container, false);
+        return inflater.inflate(R.layout.fragment_detail_user, container, false);
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.user_insert_title);
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.user_update_title);
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
@@ -58,12 +68,11 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         editTextInsertDate = view.findViewById(R.id.editTextInsertDate);
         editTextLastLogin = view.findViewById(R.id.editTextLastLogin);
         editTextUpdateDate = view.findViewById(R.id.editTextUpdateDate);
-        checkBoxActive = view.findViewById(R.id.checkBoxActive);
-        checkBoxAdmin = view.findViewById(R.id.checkBoxAdmin);
-        buttonInsert = view.findViewById(R.id.buttonInsert);
-        buttonCancel = view.findViewById(R.id.buttonCancel);
+        buttonUpdate = view.findViewById(R.id.buttonUpdate);
+        buttonDelete = view.findViewById(R.id.buttonDelete);
 
-        buttonInsert.setOnClickListener(new View.OnClickListener() {
+
+        buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
@@ -73,7 +82,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        insertUser();
+                        updateUser();
                     }
                 });
 
@@ -90,17 +99,16 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
         });
 
-        buttonCancel.setOnClickListener(new View.OnClickListener() {
+        buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewUserFragment viewUserFragment=new ViewUserFragment();
-                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
+                new DeleteUserFragment(userModel).showConfirmationDialog(getActivity());
             }
 
         });
     }
 
-    private void insertUser(){
+    private void updateUser(){
         String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -108,20 +116,23 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         String insertDate = editTextInsertDate.getText().toString().trim();
         String lastLogin = editTextLastLogin.getText().toString().trim();
         String updateDate = editTextUpdateDate.getText().toString().trim();
-        boolean isActive = checkBoxActive.isChecked();
-        boolean isAdmin = checkBoxAdmin.isChecked();
 
         if(validateUserForm()){
-            password= HashUtils.hashString(password);
-            userModel=new User(email, name, password, isAdmin, isActive);
-            MainActivity.userDao.insertUser(this, userModel);
+            //userModel=new User(email, name, password);
+            userModel.setNombre(name);
+            //Se verifica si la contraseña ha cambiado, si no lo hizo no volver a lanzar el hash
+            if(!password.equals(userModel.getPassword()))
+                password = HashUtils.hashString(password);
+            userModel.setPassword(password);
+            isUpdating=true;
+            MainActivity.userDao.updateUser(this, userModel);
         }
         else {
             //Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
         }
     }
 
-    private boolean validateUserForm(){
+    private boolean validateUserForm() {
         String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -129,12 +140,14 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         String insertDate = editTextInsertDate.getText().toString().trim();
         String lastLogin = editTextLastLogin.getText().toString().trim();
         String updateDate = editTextUpdateDate.getText().toString().trim();
-        boolean isActive = checkBoxActive.isChecked();
-        boolean isAdmin = checkBoxAdmin.isChecked();
 
         boolean result = true;
         if(email.isEmpty()) {
             editTextEmail.setError(getString(R.string.email) + " " + getString(R.string.required_dialog));
+            result = false;
+        }
+        if(!email.equals(userModel.getEmail())) {
+            editTextEmail.setError(getString(R.string.email) + " " + "introducido no concuerda con el original");
             result = false;
         }
         if(name.isEmpty()) {
@@ -159,10 +172,24 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
     @Override
     public void callbackDataAcessSuccess(User user) {
-        Toast.makeText(getContext(), R.string.user_inserted_dialog, Toast.LENGTH_LONG).show();
         userModel = user;
-        SelectUserFragment selectUserFragment = new SelectUserFragment(userModel);
-        ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+        editTextEmail.setText(userModel.getEmail());
+        editTextNombre.setText(userModel.getNombre());
+        editTextPassword.setText(userModel.getPassword());
+        editTextRepeatPassword.setText(userModel.getPassword());
+        editTextInsertDate.setText(userModel.getInsertDate());
+        editTextLastLogin.setText(userModel.getLastLogin());
+        editTextUpdateDate.setText(userModel.getUpdateDate());
+        if(isUpdating) {
+            userModel=null;
+            MainActivity.userLogin=null;
+            Toast.makeText(getContext(), R.string.user_updated_dialog, Toast.LENGTH_LONG).show();
+            ((MainActivity) getActivity()).loadLoginLayout();
+        }
+        else if (!isUpdating) {
+            ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
+        }
+        isUpdating=false;
     }
 
     @Override

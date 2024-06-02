@@ -18,10 +18,10 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
+import net.ddns.djpinxo.warecontrol.utils.HashUtils;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
-import net.ddns.djpinxo.warecontrol.utils.HashUtils;
 
 public class UpdateUserFragment extends Fragment implements FragmentCallback<User> {
 
@@ -31,6 +31,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
     private EditText editTextRepeatPassword;
     private EditText editTextInsertDate;
     private EditText editTextLastLogin;
+    private EditText editTextUpdateDate;
     private CheckBox checkBoxActive;
     private CheckBox checkBoxAdmin;
     private Button buttonUpdate;
@@ -67,6 +68,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         editTextRepeatPassword = view.findViewById(R.id.editTextRepeatPassword);
         editTextInsertDate = view.findViewById(R.id.editTextInsertDate);
         editTextLastLogin = view.findViewById(R.id.editTextLastLogin);
+        editTextUpdateDate = view.findViewById(R.id.editTextUpdateDate);
         checkBoxActive = view.findViewById(R.id.checkBoxActive);
         checkBoxAdmin = view.findViewById(R.id.checkBoxAdmin);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
@@ -116,6 +118,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
         String insertDate = editTextInsertDate.getText().toString().trim();
         String lastLogin = editTextLastLogin.getText().toString().trim();
+        String updateDate = editTextUpdateDate.getText().toString().trim();
         boolean isActive = checkBoxActive.isChecked();
         boolean isAdmin = checkBoxAdmin.isChecked();
 
@@ -143,6 +146,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
         String insertDate = editTextInsertDate.getText().toString().trim();
         String lastLogin = editTextLastLogin.getText().toString().trim();
+        String updateDate = editTextUpdateDate.getText().toString().trim();
         boolean isActive = checkBoxActive.isChecked();
         boolean isAdmin = checkBoxAdmin.isChecked();
 
@@ -184,6 +188,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         editTextRepeatPassword.setText(userModel.getPassword());
         editTextInsertDate.setText(userModel.getInsertDate());
         editTextLastLogin.setText(userModel.getLastLogin());
+        editTextUpdateDate.setText(userModel.getUpdateDate());
         checkBoxActive.setChecked(userModel.isActive());
         checkBoxAdmin.setChecked(userModel.isAdmin());
         if(isUpdating) {

@@ -63,4 +63,6 @@
     <string name="logout_dialog">Usuario desconectado</string>
     <string name="logout_title">Cerrar sesion</string>
     <string name="user_details_title">Gestionar usuario</string>
+
+    <string name="updatedate">Ultima modificacion</string>
 </resources>

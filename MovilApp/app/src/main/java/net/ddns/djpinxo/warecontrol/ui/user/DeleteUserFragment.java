@@ -14,7 +14,7 @@ public class DeleteUserFragment implements FragmentCallback<Boolean> {
 
     //creado por mantener una estructura aun que no sea fragment
 
-    Activity activity;
+    private Activity activity;
 
     private User userModel;
 

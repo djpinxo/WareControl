@@ -14,7 +14,7 @@ public class DeleteItemFragment implements FragmentCallback<Boolean> {
 
     //creado por mantener una estructura aun que no sea fragment
 
-    Activity activity;
+    private Activity activity;
 
     private Item itemModel;
 

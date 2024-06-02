@@ -68,4 +68,6 @@
     <string name="logout_title">Logout</string>
     <string name="user_details_title">Manage user</string>
 
+    <string name="updatedate">Last update</string>
+
 </resources>

@@ -11,6 +11,7 @@ public class User {
     private boolean admin;
     private boolean active;
     private String lastLogin;
+    private String updateDate;
 
     public User() {
         super();
@@ -86,5 +87,13 @@ public class User {
 
     public void setLastLogin(String lastLogin) {
         this.lastLogin = lastLogin;
+    }
+
+    public String getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(String updateDate) {
+        this.updateDate = updateDate;
     }
 }

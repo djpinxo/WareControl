@@ -46,4 +46,28 @@ public class LoginDaoApiImplement {
         });
     }
 
+    public void registerUser(FragmentCallback<User> fragmentCallback, User user) {
+        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        Call <User> call = apiService.registerUser(user);
+
+
+        call.enqueue(new Callback<User>() {
+            @Override
+            public void onResponse(Call<User> call, Response<User> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    fragmentCallback.callbackDataAcessSuccess(response.body());
+                }
+                else{
+                    fragmentCallback.callbackDataAcessError(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<User> call, Throwable t) {
+                Log.w(this.getClass().getName(), t.getMessage());
+                fragmentCallback.callbackDataAcessError(null);
+            }
+        });
+    }
+
 }

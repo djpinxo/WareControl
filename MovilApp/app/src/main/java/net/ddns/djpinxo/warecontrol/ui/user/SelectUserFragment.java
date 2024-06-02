@@ -26,6 +26,7 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
     private EditText editTextPassword;
     private EditText editTextInsertDate;
     private EditText editTextLastLogin;
+    private EditText editTextUpdateDate;
     private CheckBox checkBoxActive;
     private CheckBox checkBoxAdmin;
     private Button buttonUpdate;
@@ -60,6 +61,7 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
         editTextPassword = view.findViewById(R.id.editTextPassword);
         editTextInsertDate = view.findViewById(R.id.editTextInsertDate);
         editTextLastLogin = view.findViewById(R.id.editTextLastLogin);
+        editTextUpdateDate = view.findViewById(R.id.editTextUpdateDate);
         checkBoxActive = view.findViewById(R.id.checkBoxActive);
         checkBoxAdmin = view.findViewById(R.id.checkBoxAdmin);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
@@ -101,6 +103,7 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
         editTextPassword.setText(userModel.getPassword());
         editTextInsertDate.setText(userModel.getInsertDate());
         editTextLastLogin.setText(userModel.getLastLogin());
+        editTextUpdateDate.setText(userModel.getUpdateDate());
         checkBoxActive.setChecked(userModel.isActive());
         checkBoxAdmin.setChecked(userModel.isAdmin());
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
