@@ -50,6 +50,10 @@ public interface ApiService {
     Call <Contenedor> updateContenedor(@Path("id") long id, @Body Contenedor contenedor);
     @DELETE("contenedores/{id}")
     Call <Void> deleteContenedor(@Path("id") long id);
+    @GET("contenedores/{id}/items")
+    Call <List<Item>> getContenedorItems(@Path("id") long id);
+    @GET("contenedores/{id}/contenedorhijos")
+    Call <List<Contenedor>> getContenedorContenedorHijos(@Path("id") long id);
 
     @POST("login")
     Call <User> loginUser(@Body User user);

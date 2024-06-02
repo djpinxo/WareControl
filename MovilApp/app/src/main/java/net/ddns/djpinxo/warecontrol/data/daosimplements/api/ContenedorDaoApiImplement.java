@@ -5,6 +5,7 @@ import android.util.Log;
 
 import net.ddns.djpinxo.warecontrol.data.daos.ContenedorDao;
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
+import net.ddns.djpinxo.warecontrol.data.model.Item;
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 import java.util.List;
@@ -143,5 +144,56 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
             }
         });
     }
-    
+
+    @Override
+    public void getContenedorItems(FragmentCallback<List<Item>> fragmentCallback, long id) {
+        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        Call <List<Item>> call = apiService.getContenedorItems(id);
+
+
+        call.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    fragmentCallback.callbackDataAcessSuccess(response.body());
+                }
+                else{
+                    fragmentCallback.callbackDataAcessError(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.w(this.getClass().getName(), t.getMessage());
+                fragmentCallback.callbackDataAcessError(null);
+            }
+        });
+    }
+
+    @Override
+    public void getContenedorContenedorHijos(FragmentCallback<List<Contenedor>> fragmentCallback, long id) {
+        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
+        Call <List<Contenedor>> call = apiService.getContenedorContenedorHijos(id);
+
+
+        call.enqueue(new Callback<List<Contenedor>>() {
+            @Override
+            public void onResponse(Call<List<Contenedor>> call, Response<List<Contenedor>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    fragmentCallback.callbackDataAcessSuccess(response.body());
+                }
+                else{
+                    fragmentCallback.callbackDataAcessError(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Contenedor>> call, Throwable t) {
+                Log.w(this.getClass().getName(), t.getMessage());
+                fragmentCallback.callbackDataAcessError(null);
+            }
+        });
+    }
+
+
 }

@@ -11,12 +11,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalSelectContenedor;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalViewContenedor;
 
 public class SelectItemFragment extends Fragment implements FragmentCallback<Item> {
 
@@ -84,8 +89,29 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
 
         });
 
-        //MainActivity.itemDao.getItem(this, itemModel.getEmail());
+        ImageButton buttonInfo = view.findViewById(R.id.buttonInfo);
+        buttonInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Long.valueOf(editTextContenedor.getText().toString().trim());
+                    showSelectModal();
+                }
+                catch (NumberFormatException e) {
+                    Toast.makeText(getContext(), getString(R.string.container)+ " " + getString(R.string.notnumeric_dialog), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
+
+    //crear modal de informacion de contenedor
+    private void showSelectModal() {
+        ModalSelectContenedor modalSelectContenedor = new ModalSelectContenedor(new Contenedor(Long.valueOf(editTextContenedor.getText().toString().trim()),null,null,null,null,null));
+        modalSelectContenedor.show(getParentFragmentManager(), "ContenedorSelect");
+    }
+    //finish crear modal
+
 
     public void callbackDataAcessSuccess(Item item){
         itemModel = item;

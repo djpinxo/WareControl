@@ -4,6 +4,7 @@ import android.util.Log;
 
 import net.ddns.djpinxo.warecontrol.data.daos.ContenedorDao;
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
+import net.ddns.djpinxo.warecontrol.data.model.Item;
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 import java.util.ArrayList;
@@ -151,6 +152,16 @@ public class ContenedorDaoLocalBBDDImplements implements ContenedorDao {
             }
         });
         hilo.start();
+    }
+
+    @Override
+    public void getContenedorItems(FragmentCallback<List<Item>> fragmentCallback, long id) {
+
+    }
+
+    @Override
+    public void getContenedorContenedorHijos(FragmentCallback<List<Contenedor>> fragmentCallback, long id) {
+
     }
 
     public static void waitSimulation(){

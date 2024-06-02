@@ -85,7 +85,7 @@
 
         <EditText
             android:id="@+id/editTextContenedor"
-            android:layout_width="match_parent"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:hint="@string/container"
             android:enabled="false"
@@ -93,7 +93,23 @@
             android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/textViewContenedor"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            app:layout_constraintEnd_toStartOf="@id/buttonInfo" />
+
+        <ImageButton
+            android:id="@+id/buttonInfo"
+            android:layout_width="wrap_content"
+            android:layout_height="0dp"
+            android:src="@drawable/info"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/update"
+            style="@style/botonesColorText"
+            app:layout_constraintTop_toBottomOf="@id/textViewContenedor"
+            app:layout_constraintStart_toEndOf="@id/editTextContenedor"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/editTextContenedor"
+            android:padding="2dp"
+            />
+
 
         <LinearLayout
             android:layout_width="0dp"

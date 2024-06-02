@@ -11,7 +11,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
@@ -84,8 +86,68 @@ public class SelectContenedorFragment extends Fragment implements FragmentCallba
 
         });
 
-        //MainActivity.contenedorDao.getContenedor(this, contenedorModel.getEmail());
+        ImageButton buttonInfo = view.findViewById(R.id.buttonInfo);
+        buttonInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Long.valueOf(editTextContenedorPadre.getText().toString().trim());
+                    showSelectModal();
+                }
+                catch (NumberFormatException e) {
+                    Toast.makeText(getContext(), getString(R.string.dadcontainer)+ " " + getString(R.string.notnumeric_dialog), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        Button buttonHijos = view.findViewById(R.id.buttonHijos);
+        buttonHijos.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Long.valueOf(editTextId.getText().toString().trim());
+                    showChildsModal();
+                }
+                catch (NumberFormatException e) {
+                    Toast.makeText(getContext(), getString(R.string.id)+ " " + getString(R.string.notnumeric_dialog), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        Button buttonItems = view.findViewById(R.id.buttonItems);
+        buttonItems.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Long.valueOf(editTextId.getText().toString().trim());
+                    showItemsModal();
+                }
+                catch (NumberFormatException e) {
+                    Toast.makeText(getContext(), getString(R.string.id)+ " " + getString(R.string.notnumeric_dialog), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+
     }
+
+    //crear modal de informacion de contenedor
+    private void showSelectModal() {
+        ModalSelectContenedor modalSelectContenedor = new ModalSelectContenedor(new Contenedor(Long.valueOf(editTextContenedorPadre.getText().toString().trim()),null,null,null,null,null));
+        modalSelectContenedor.show(getParentFragmentManager(), "ContenedorSelect");
+    }
+    //finish crear modal
+
+    //crear modal de lista hijos
+    private void showChildsModal() {
+        ModalViewContenedorContenedorHijos modalViewContenedorContenedorHijos = new ModalViewContenedorContenedorHijos(new Contenedor(Long.valueOf(editTextId.getText().toString().trim()),null,null,null,null,null));
+        modalViewContenedorContenedorHijos.show(getParentFragmentManager(), "ContenedorChilds");
+    }
+    //finish crear modal
+
+    //crear modal de lista de items
+    private void showItemsModal() {
+        ModalViewContenedorItems modalViewContenedorItems = new ModalViewContenedorItems(new Contenedor(Long.valueOf(editTextId.getText().toString().trim()),null,null,null,null,null));
+        modalViewContenedorItems.show(getParentFragmentManager(), "ContenedorItems");
+    }
+    //finish crear modal
 
 
     public void callbackDataAcessSuccess(Contenedor contenedor){

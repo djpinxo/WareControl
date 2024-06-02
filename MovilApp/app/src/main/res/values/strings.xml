@@ -70,4 +70,8 @@
 
     <string name="updatedate">Last update</string>
 
+    <string name="detail">Detail</string>
+    <string name="childcontainer">Container Childs</string>
+    <string name="items">Items</string>
+
 </resources>

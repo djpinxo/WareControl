@@ -1,7 +1,9 @@
 package net.ddns.djpinxo.warecontrol.ui.item;
 
+import android.Manifest;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -13,6 +15,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,6 +24,9 @@ import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalScanContenedor;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalSelectContenedor;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalViewContenedor;
 
 public class UpdateItemFragment extends Fragment implements FragmentCallback<Item> {
 
@@ -99,7 +105,69 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
             }
 
         });
+
+
+        ImageButton buttonInfo = view.findViewById(R.id.buttonInfo);
+        ImageButton buttonSearch = view.findViewById(R.id.buttonSearch);
+        ImageButton buttonScan = view.findViewById(R.id.buttonScan);
+        buttonInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Long.valueOf(editTextContenedor.getText().toString().trim());
+                    showSelectModal();
+                }
+                catch (NumberFormatException e) {
+                    Toast.makeText(getContext(), getString(R.string.container)+ " " + getString(R.string.notnumeric_dialog), Toast.LENGTH_LONG).show();
+                }
+            }
+        });
+        buttonSearch.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                showListModal();
+            }
+        });
+        buttonScan.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (checkCameraPermission()) {
+                    showScanModal();
+                } else {
+                    requestCameraPermission();
+                }
+            }
+        });
+
     }
+
+    //crear modal de informacion de contenedor
+    private void showSelectModal() {
+        ModalSelectContenedor modalSelectContenedor = new ModalSelectContenedor(new Contenedor(Long.valueOf(editTextContenedor.getText().toString().trim()),null,null,null,null,null));
+        modalSelectContenedor.show(getParentFragmentManager(), "ContenedorSelect");
+    }
+    //finish crear modal
+
+    //crear modal de seleccion de contenedor
+    private void showListModal() {
+        ModalViewContenedor modalViewContenedor = new ModalViewContenedor();
+        modalViewContenedor.show(getParentFragmentManager(), "ContenedorView");
+    }
+    //finish crear modal
+
+    //crear modal de scan qa de contenedor
+    private void showScanModal() {
+        ModalScanContenedor modalScanContenedor = new ModalScanContenedor();
+        modalScanContenedor.show(getParentFragmentManager(), "ContenedorScan");
+    }
+    private boolean checkCameraPermission() {
+        return getActivity().checkSelfPermission(Manifest.permission.CAMERA) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestCameraPermission() {
+        getActivity().requestPermissions(new String[]{Manifest.permission.CAMERA}, 100);
+    }
+    //finish crear modal
 
     private void updateItem(){
         String sId = editTextId.getText().toString().trim();
@@ -136,7 +204,7 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
             try{
                 Long.valueOf(sId);
             }catch (NumberFormatException e) {
-                editTextId.setError(getString(R.string.dadcontainer)+ " " + getString(R.string.notnumeric_dialog));
+                editTextId.setError(getString(R.string.container)+ " " + getString(R.string.notnumeric_dialog));
                 result = false;
             }
         }
@@ -152,7 +220,7 @@ public class UpdateItemFragment extends Fragment implements FragmentCallback<Ite
             try{
                 Long.valueOf(sIdContenedor);
             }catch (NumberFormatException e) {
-                editTextContenedor.setError(getString(R.string.dadcontainer)+ " " + getString(R.string.notnumeric_dialog));
+                editTextContenedor.setError(getString(R.string.container)+ " " + getString(R.string.notnumeric_dialog));
                 result = false;
             }
         }

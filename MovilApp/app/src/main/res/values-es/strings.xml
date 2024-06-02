@@ -65,4 +65,7 @@
     <string name="user_details_title">Gestionar usuario</string>
 
     <string name="updatedate">Ultima modificacion</string>
+    <string name="detail">Detalle</string>
+    <string name="childcontainer">Contenedores hijos</string>
+    <string name="items">Objetos</string>
 </resources>
