@@ -5,15 +5,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 public class DeleteItemFragment implements FragmentCallback<Boolean> {
 
-    //TODO creado por mantener una estructura
-    //hacer validacion y mostrar AlertDialog
+    //creado por mantener una estructura aun que no sea fragment
 
     Activity activity;
 
@@ -54,7 +53,7 @@ public class DeleteItemFragment implements FragmentCallback<Boolean> {
 
     private void deleteItem(){
         if(validateItemForm()){
-            //MainActivity.itemDao.deleteItem(this, itemModel.getEmail());
+            MainActivity.itemDao.deleteItem(this, itemModel.getId());
         }
         else {
             Toast.makeText(activity, R.string.error_dialog, Toast.LENGTH_LONG).show();
@@ -62,12 +61,12 @@ public class DeleteItemFragment implements FragmentCallback<Boolean> {
     }
 
     private boolean validateItemForm() {
-        return true;//!itemModel.getEmail().trim().isEmpty();
+        return !itemModel.getId().toString().isEmpty();
     }
 
     @Override
     public void callbackDataAcessSuccess(Boolean object) {
-        //Toast.makeText(activity, R.string.item_deleted_dialog, Toast.LENGTH_LONG).show();
+        Toast.makeText(activity, R.string.item_deleted_dialog, Toast.LENGTH_LONG).show();
         ViewItemFragment viewItemFragment = new ViewItemFragment();
         ((MainActivity) activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewItemFragment);
     }

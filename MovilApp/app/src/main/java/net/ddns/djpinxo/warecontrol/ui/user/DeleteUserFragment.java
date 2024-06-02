@@ -12,8 +12,7 @@ import net.ddns.djpinxo.warecontrol.data.model.User;
 
 public class DeleteUserFragment implements FragmentCallback<Boolean> {
 
-    //TODO creado por mantener una estructura
-    //hacer validacion y mostrar AlertDialog
+    //creado por mantener una estructura aun que no sea fragment
 
     Activity activity;
 

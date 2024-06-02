@@ -1,0 +1,12 @@
+<!-- res/menu/simple_menu.xml -->
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/userMenuOption"
+        android:title="@string/user_menu_option" />
+    <item
+        android:id="@+id/itemMenuOption"
+        android:title="@string/item_menu_option" />
+    <item
+        android:id="@+id/contendorMenuOption"
+        android:title="@string/contenedor_menu_option" />
+</menu>

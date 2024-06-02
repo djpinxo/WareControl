@@ -1,27 +1,29 @@
 package net.ddns.djpinxo.warecontrol.ui.item;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 public class SelectItemFragment extends Fragment implements FragmentCallback<Item> {
 
-
+    private EditText editTextId;
     private EditText editTextNombre;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
+    private EditText editTextDescripcion;
+    private EditText editTextContenedor;
     private Button buttonUpdate;
     private Button buttonDelete;
     private Button buttonBack;
@@ -33,7 +35,7 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
     public SelectItemFragment (Item itemModel){
         this();
         this.itemModel=itemModel;
-        //MainActivity.itemDao.getItem(this, itemModel.getEmail());
+        MainActivity.itemDao.getItem(this, itemModel.getId());
     }
 
     @Override
@@ -46,10 +48,13 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
         return inflater.inflate(R.layout.fragment_select_item, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.item_select_title);
+        editTextId = view.findViewById(R.id.editTextId);
         editTextNombre = view.findViewById(R.id.editTextNombre);
-        editTextEmail = view.findViewById(R.id.editTextEmail);
-        editTextPassword = view.findViewById(R.id.editTextPassword);
+        editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
+        editTextContenedor = view.findViewById(R.id.editTextContenedor);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
         buttonDelete = view.findViewById(R.id.buttonDelete);
         buttonBack = view.findViewById(R.id.buttonBack);
@@ -84,9 +89,12 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
 
     public void callbackDataAcessSuccess(Item item){
         itemModel = item;
-        //editTextEmail.setText(itemModel.getEmail());
+        editTextId.setText(itemModel.getId().toString());
         editTextNombre.setText(itemModel.getNombre());
-        //editTextPassword.setText(itemModel.getPassword());
+        editTextDescripcion.setText(itemModel.getDescripcion());
+        if(itemModel.getContenedor()!=null) {
+            editTextContenedor.setText(itemModel.getContenedor().getId().toString());
+        }
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 
@@ -94,6 +102,4 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
         ViewItemFragment viewItemFragment=new ViewItemFragment();
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewItemFragment);
     }
-
-
 }

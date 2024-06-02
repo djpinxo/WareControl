@@ -2,17 +2,13 @@ package net.ddns.djpinxo.warecontrol.ui.user;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.Context;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageButton;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.RecyclerView;
 
 import net.ddns.djpinxo.warecontrol.MainActivity;
@@ -72,7 +68,6 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.ViewHo
             textViewEmail.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(v.getContext().getApplicationContext(), "evento consulta pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
                     SelectUserFragment selectUserFragment=new SelectUserFragment(new User(textViewEmail.getText().toString(), null, null));
                     ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
 
@@ -82,7 +77,6 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.ViewHo
             buttonUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(v.getContext().getApplicationContext(), "evento modificar pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
                     UpdateUserFragment updateUserFragment=new UpdateUserFragment(new User(textViewEmail.getText().toString(), null, null));
                     ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, updateUserFragment);
                 }
@@ -91,7 +85,6 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.ViewHo
             buttonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(v.getContext().getApplicationContext(), "evento borrar pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
                     new DeleteUserFragment(new User(textViewEmail.getText().toString(), null, null)).showConfirmationDialog(activity);
                 }
 

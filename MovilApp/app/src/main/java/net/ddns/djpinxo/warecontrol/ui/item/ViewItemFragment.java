@@ -1,10 +1,6 @@
 package net.ddns.djpinxo.warecontrol.ui.item;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -12,10 +8,16 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,7 +27,6 @@ public class ViewItemFragment extends Fragment implements FragmentCallback<List<
 
     private RecyclerView recyclerViewItem;
     private AdapterItemList adapter;
-    //private List<Item> itemList = BBDDExample.getItems();
 
 
 
@@ -42,11 +43,11 @@ public class ViewItemFragment extends Fragment implements FragmentCallback<List<
 
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.item_view_title);
 
-        /*recyclerViewItem = view.findViewById(R.id.recyclerViewItem);
+        recyclerViewItem = view.findViewById(R.id.recyclerViewItem);
         recyclerViewItem.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //adapter = new AdapterItemList(MainActivity.itemDao.getItems(), getActivity());
         adapter = new AdapterItemList(new ArrayList<Item>(), getActivity());
         recyclerViewItem.setAdapter(adapter);
 
@@ -61,7 +62,7 @@ public class ViewItemFragment extends Fragment implements FragmentCallback<List<
 
         });
 
-        MainActivity.itemDao.getItems(this);*/
+        MainActivity.itemDao.getItems(this);
 
     }
 
@@ -74,9 +75,5 @@ public class ViewItemFragment extends Fragment implements FragmentCallback<List<
     public void callbackDataAcessError(List<Item> items) {
         Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
     }
-    /*
-    private void addItem(Item item) {
-        itemList.add(item);
-        adapter.notifyItemInserted(itemList.size() - 1);
-    }*/
+
 }

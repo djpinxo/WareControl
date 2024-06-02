@@ -21,6 +21,7 @@
     <string name="no">No</string>
     <string name="confirm_dialog">Do you want to save changes?</string>
     <string name="error_dialog">Error on executed operation!</string>
+    <string name="notnumeric_dialog">no is a numeric</string>
     <string name="required_dialog">is required</string>
     <string name="user_inserted_dialog">User is saved!</string>
     <string name="user_updated_dialog">User is updated!</string>
@@ -28,6 +29,32 @@
     <string name="contenedor_inserted_dialog">Container is saved!</string>
     <string name="contenedor_updated_dialog">Container is updated!</string>
     <string name="contenedor_deleted_dialog">Container is deleted!</string>
+    <string name="item_updated_dialog">Item is saved!</string>
+    <string name="item_deleted_dialog">Item is deleted!</string>
+    <string name="item_inserted_dialog">Item is updated!</string>
+    <string name="user_menu_option">User management</string>
+    <string name="item_menu_option">Item management</string>
+    <string name="contenedor_menu_option">Container management</string>
+    <string name="container">Container</string>
+    <string name="user_view_title">User list</string>
+    <string name="item_view_title">Item list</string>
+    <string name="contenedor_view_title">Container list</string>
+
+    <string name="user_select_title">User info</string>
+    <string name="item_select_title">Item info</string>
+    <string name="contenedor_select_title">Container info</string>
+
+    <string name="user_insert_title">Create user</string>
+    <string name="item_insert_title">Create item</string>
+    <string name="contenedor_insert_title">Create container</string>
+
+    <string name="user_update_title">Update user</string>
+    <string name="item_update_title">Update item</string>
+    <string name="contenedor_update_title">Update container</string>
+
+    <string name="user_delete_title">Delete user</string>
+    <string name="item_delete_title">Delete item</string>
+    <string name="contenedor_delete_title">Delete container</string>
 
 
 </resources>

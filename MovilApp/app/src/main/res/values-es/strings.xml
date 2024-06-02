@@ -22,10 +22,37 @@
     <string name="error_dialog">¡Hubo un error en la operacion!</string>
     <string name="user_inserted_dialog">¡Usuario guardado!</string>
     <string name="required_dialog">es requerido</string>
+    <string name="notnumeric_dialog">no es un numero</string>
     <string name="id">Id</string>
     <string name="description">Descripcion</string>
     <string name="dadcontainer">Contenedor padre</string>
-    <string name="contenedor_updated_dialog">¡contenedor actualizado!</string>
-    <string name="contenedor_deleted_dialog">¡contenedor borrado!</string>
-    <string name="contenedor_inserted_dialog">¡contenedor guardado!</string>
+    <string name="contenedor_updated_dialog">¡Contenedor actualizado!</string>
+    <string name="contenedor_deleted_dialog">¡Contenedor borrado!</string>
+    <string name="contenedor_inserted_dialog">¡Contenedor guardado!</string>
+    <string name="item_updated_dialog">¡Item actualizado!</string>
+    <string name="item_deleted_dialog">¡Item borrado!</string>
+    <string name="item_inserted_dialog">¡Item guardado!</string>
+    <string name="user_menu_option">Gestion de usuarios</string>
+    <string name="contenedor_menu_option">Gestion de contenedores</string>
+    <string name="item_menu_option">Gestion de objetos</string>
+    <string name="container">Contenedor</string>
+    <string name="user_view_title">Lista de usuarios</string>
+    <string name="item_view_title">Lista de objetos</string>
+    <string name="contenedor_view_title">Lista de contenedores</string>
+
+    <string name="user_select_title">Informacion de usuario</string>
+    <string name="item_select_title">Informacion de objeto</string>
+    <string name="contenedor_select_title">Informacion del contenedor</string>
+
+    <string name="user_insert_title">Crear usuario</string>
+    <string name="item_insert_title">Crear objeto</string>
+    <string name="contenedor_insert_title">Crear contenedor</string>
+
+    <string name="user_update_title">Actualizar usuario</string>
+    <string name="item_update_title">Actualizar objeto</string>
+    <string name="contenedor_update_title">Actualizar contenedor</string>
+
+    <string name="user_delete_title">Borrar usuario</string>
+    <string name="item_delete_title">Borrar objeto</string>
+    <string name="contenedor_delete_title">Borrar contenedor</string>
 </resources>

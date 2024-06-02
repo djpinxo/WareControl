@@ -5,15 +5,14 @@ import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.widget.Toast;
 
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 public class DeleteContenedorFragment implements FragmentCallback<Boolean> {
 
-    //TODO creado por mantener una estructura
-    //hacer validacion y mostrar AlertDialog
+    //creado por mantener una estructura aun que no sea fragment
 
     Activity activity;
 
@@ -54,7 +53,7 @@ public class DeleteContenedorFragment implements FragmentCallback<Boolean> {
 
     private void deleteContenedor(){
         if(validateContenedorForm()){
-            MainActivity.contenedorDao.deleteContenedor(this, 0);
+            MainActivity.contenedorDao.deleteContenedor(this, contenedorModel.getId());
         }
         else {
             Toast.makeText(activity, R.string.error_dialog, Toast.LENGTH_LONG).show();
@@ -62,6 +61,7 @@ public class DeleteContenedorFragment implements FragmentCallback<Boolean> {
     }
 
     private boolean validateContenedorForm() {
+        //TODO validar que no tenga hijos o almenos advertir
         //return !contenedorModel.getEmail().trim().isEmpty();
         return true;
     }

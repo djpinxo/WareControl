@@ -13,6 +13,16 @@
         <item name="android:tint">@color/m3_default_color_primary_text</item>
     </style>
 
+    <style name="appBarColor">
+        <item name="android:background">@color/greenlogo</item>
+    </style>
+
+    <style name="defaultcolorprimarytext">
+
+        <item name="android:textColor">@color/white</item>
+        <item name="tint">@color/white</item>
+    </style>
+
     <style name="logoBackGroundAlpha">
         <item name="android:alpha">0.1</item>
     </style>

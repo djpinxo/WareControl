@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
@@ -42,6 +43,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.user_insert_title);
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
@@ -52,18 +54,6 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //registerUser();
-                /*((MainActivity)getActivity()).showConfirmationDialog();
-                userModel=insertUser();
-                if(userModel != null){
-                    Toast.makeText(getContext(), R.string.user_inserted_dialog, Toast.LENGTH_LONG).show();
-                    SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
-                    ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
-                }
-                else {
-                    Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
-                }*/
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.confirm);
                 builder.setMessage(R.string.confirm_dialog);
@@ -98,70 +88,14 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         });
     }
 
-
-/*
-    private void registerUser() {
-        String name = editTextNombre.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
-
-        //TODO realizar validaciones ventana
-
-        if (TextUtils.isEmpty(name)) {
-            editTextNombre.setError("Nombre es requerido");
-            return;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            editTextEmail.setError("Correo electrónico es requerido");
-            return;
-        }
-
-        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(repeatPassword) || !password.equals(repeatPassword)) {
-            editTextPassword.setError("Contraseña es requerida");
-            return;
-        }
-
-
-
-        // Llamar a la API para registrar al usuario
-        userModel = new User(editTextEmail.getText().toString(), editTextNombre.getText().toString(), editTextEmail.getText().toString());
-        if(MainActivity.userDao.getUser(userModel.getEmail())==null){
-            MainActivity.userDao.getUsers().add(userModel);
-            Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
-        }
-
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<Void> call = apiService.registerUser(name, email, password);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                    // Navegar a otra actividad o realizar otra acción
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Error en el registro: " + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Fallo en la solicitud: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onFailure: ", t);
-            }
-        });
-    }*/
-
     private void insertUser(){
-
         String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
 
         if(validateUserForm()){
-            userModel=new User(email,name,password);
+            userModel=new User(email, name, password);
             MainActivity.userDao.insertUser(this, userModel);
         }
         else {
@@ -176,7 +110,6 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
 
         boolean result=true;
-
         if(email.isEmpty()) {
             editTextEmail.setError(R.string.email + " " + R.string.required_dialog);
             result = false;
@@ -201,11 +134,10 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         return result;
     }
 
-
     @Override
     public void callbackDataAcessSuccess(User user) {
         Toast.makeText(getContext(), R.string.user_inserted_dialog, Toast.LENGTH_LONG).show();
-        userModel=user;
+        userModel = user;
         SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
     }

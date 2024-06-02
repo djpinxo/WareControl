@@ -1,23 +1,24 @@
 package net.ddns.djpinxo.warecontrol.ui.contenedor;
 
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 public class SelectContenedorFragment extends Fragment implements FragmentCallback<Contenedor> {
-
 
     private EditText editTextId;
     private EditText editTextNombre;
@@ -47,7 +48,9 @@ public class SelectContenedorFragment extends Fragment implements FragmentCallba
         return inflater.inflate(R.layout.fragment_select_contenedor, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.contenedor_select_title);
         editTextId = view.findViewById(R.id.editTextId);
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
@@ -84,6 +87,7 @@ public class SelectContenedorFragment extends Fragment implements FragmentCallba
         //MainActivity.contenedorDao.getContenedor(this, contenedorModel.getEmail());
     }
 
+
     public void callbackDataAcessSuccess(Contenedor contenedor){
         contenedorModel = contenedor;
         editTextId.setText(contenedorModel.getId().toString());
@@ -99,6 +103,4 @@ public class SelectContenedorFragment extends Fragment implements FragmentCallba
         ViewContenedorFragment viewContenedorFragment=new ViewContenedorFragment();
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewContenedorFragment);
     }
-
-
 }

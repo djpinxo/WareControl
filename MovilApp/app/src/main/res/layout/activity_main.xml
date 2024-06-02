@@ -16,16 +16,56 @@
         style="@style/logoBackGroundAlpha"
         />
 
+    <LinearLayout
+        android:id="@+id/app_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:orientation="horizontal"
+        android:padding="16dp"
+        android:background="@color/greenlogo"
+        android:foregroundTint="@color/greenlogo"
+        >
+        <ImageButton
+            android:id="@+id/buttonShowMenu"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/menu"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            style="@style/defaultcolorprimarytext" />
+        <TextView
+            android:id="@+id/titleFrame"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:gravity="center"
+            android:textAlignment="center"
+            android:text="Home"
+            style="@style/defaultcolorprimarytext"
+            />
+        <ImageButton
+            android:id="@+id/buttonLoginUser"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/cuenta"
+            android:background="?android:attr/selectableItemBackgroundBorderless"
+            style="@style/defaultcolorprimarytext"/>
+
+    </LinearLayout>
+
 
     <LinearLayout
         android:id="@+id/LinearLayoutContenedorDeFragment"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="0dp"
+        android:layout_height="0dp"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical" />
+        app:layout_constraintTop_toBottomOf="@+id/app_bar"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:orientation="vertical"
+        />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

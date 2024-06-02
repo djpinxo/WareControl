@@ -3,28 +3,30 @@ package net.ddns.djpinxo.warecontrol.ui.contenedor;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 public class UpdateContenedorFragment extends Fragment implements FragmentCallback<Contenedor> {
 
+    private EditText editTextId;
     private EditText editTextNombre;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private EditText editTextRepeatPassword;
+    private EditText editTextDescripcion;
+    private EditText editTextContenedorPadre;
     private Button buttonUpdate;
     private Button buttonCancel;
     private static Contenedor contenedorModel;
@@ -35,10 +37,9 @@ public class UpdateContenedorFragment extends Fragment implements FragmentCallba
     }
     public UpdateContenedorFragment (Contenedor contenedorModel){
         this();
-        //this.contenedorModel = MainActivity.contenedorDao.getContenedor(contenedorModel.getEmail());
         this.contenedorModel=contenedorModel;
         isUpdating=false;
-        MainActivity.contenedorDao.getContenedor(this, 0);
+        MainActivity.contenedorDao.getContenedor(this, contenedorModel.getId());
 
     }
 
@@ -52,11 +53,13 @@ public class UpdateContenedorFragment extends Fragment implements FragmentCallba
         return inflater.inflate(R.layout.fragment_update_contenedor, container, false);
     }
 
+    @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.contenedor_update_title);
+        editTextId = view.findViewById(R.id.editTextId);
         editTextNombre = view.findViewById(R.id.editTextNombre);
-        editTextEmail = view.findViewById(R.id.editTextEmail);
-        editTextPassword = view.findViewById(R.id.editTextPassword);
-        editTextRepeatPassword = view.findViewById(R.id.editTextRepeatPassword);
+        editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
+        editTextContenedorPadre = view.findViewById(R.id.editTextContenedorPadre);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
         buttonCancel = view.findViewById(R.id.buttonCancel);
 
@@ -97,15 +100,18 @@ public class UpdateContenedorFragment extends Fragment implements FragmentCallba
         });
     }
 
-
     private void updateContenedor(){
+        String sId = editTextId.getText().toString().trim();
         String name = editTextNombre.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+        String descripcion = editTextDescripcion.getText().toString().trim();
+        String sIdPadre = editTextContenedorPadre.getText().toString().trim();
 
         if(validateContenedorForm()){
-            //contenedorModel=new Contenedor(email,name,password);
+            Contenedor contenedorPadre = (sIdPadre.isEmpty())?null:new Contenedor(Long.valueOf(sIdPadre), null, null, null, null, null);
+            //contenedorModel=new Contenedor(0l,name,descripcion, contenedorPadre, null, null);
+            contenedorModel.setNombre(name);
+            contenedorModel.setDescripcion(descripcion);
+            contenedorModel.setContenedorPadre(contenedorPadre);
             isUpdating=true;
             MainActivity.contenedorDao.updateContenedor(this, contenedorModel);
         }
@@ -115,31 +121,39 @@ public class UpdateContenedorFragment extends Fragment implements FragmentCallba
     }
 
     private boolean validateContenedorForm() {
+        String sId = editTextId.getText().toString().trim();
         String name = editTextNombre.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+        String descripcion = editTextDescripcion.getText().toString().trim();
+        String sIdPadre = editTextContenedorPadre.getText().toString().trim();
 
         boolean result = true;
-        if(email.isEmpty()) {
-            editTextEmail.setError(R.string.email + " " + R.string.required_dialog);
+        if(sId.isEmpty()) {
+            editTextId.setError(R.string.id + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(!sId.isEmpty()){
+            try{
+                Long.valueOf(sId);
+            }catch (NumberFormatException e) {
+                editTextId.setError(R.string.dadcontainer+ " " + R.string.notnumeric_dialog);
+                result = false;
+            }
+        }
+        if(!sId.equals(contenedorModel.getId().toString())) {
+            editTextId.setError(R.string.id + " " + "introducido no concuerda con el original");
             result = false;
         }
         if(name.isEmpty()) {
             editTextNombre.setError(R.string.name + " " + R.string.required_dialog);
             result = false;
         }
-        if(password.isEmpty()) {
-            editTextPassword.setError(R.string.password + " " + R.string.required_dialog);
-            result = false;
-        }
-        if(repeatPassword.isEmpty()) {
-            editTextRepeatPassword.setError(R.string.repeatpassword + " " + R.string.required_dialog);
-            result = false;
-        }
-        if(result && !password.equals(repeatPassword)) {
-            editTextRepeatPassword.setError("la "+R.string.password+" tiene que coincidir en los dos campos");
-            result = false;
+        if(!sIdPadre.isEmpty()){
+            try{
+                Long.valueOf(sIdPadre);
+            }catch (NumberFormatException e) {
+                editTextContenedorPadre.setError(R.string.dadcontainer+ " " + R.string.notnumeric_dialog);
+                result = false;
+            }
         }
 
         return result;
@@ -147,10 +161,13 @@ public class UpdateContenedorFragment extends Fragment implements FragmentCallba
 
     @Override
     public void callbackDataAcessSuccess(Contenedor contenedor) {
-        /*contenedorModel = contenedor;
-        editTextEmail.setText(contenedorModel.getEmail());
+        contenedorModel = contenedor;
+        editTextId.setText(contenedorModel.getId().toString());
         editTextNombre.setText(contenedorModel.getNombre());
-        editTextPassword.setText(contenedorModel.getPassword());
+        editTextDescripcion.setText(contenedorModel.getDescripcion());
+        if(contenedorModel.getContenedorPadre()!=null) {
+            editTextContenedorPadre.setText(contenedorModel.getContenedorPadre().getId().toString());
+        }
         if(isUpdating) {
             Toast.makeText(getContext(), R.string.contenedor_updated_dialog, Toast.LENGTH_LONG).show();
             SelectContenedorFragment selectContenedorFragment = new SelectContenedorFragment(contenedorModel);
@@ -159,7 +176,7 @@ public class UpdateContenedorFragment extends Fragment implements FragmentCallba
         else if (!isUpdating) {
             ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
         }
-        isUpdating=false;*/
+        isUpdating=false;
     }
 
     @Override

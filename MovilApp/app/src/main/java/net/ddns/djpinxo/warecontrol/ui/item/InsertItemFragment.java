@@ -3,28 +3,31 @@ package net.ddns.djpinxo.warecontrol.ui.item;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 public class InsertItemFragment extends Fragment implements FragmentCallback <Item> {
 
+    private EditText editTextId;
     private EditText editTextNombre;
-    private EditText editTextEmail;
-    private EditText editTextPassword;
-    private EditText editTextRepeatPassword;
+    private EditText editTextDescripcion;
+    private EditText editTextContenedor;
     private Button buttonInsert;
     private Button buttonCancel;
     private Item itemModel;
@@ -41,28 +44,17 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.item_insert_title);
+        editTextId = view.findViewById(R.id.editTextId);
         editTextNombre = view.findViewById(R.id.editTextNombre);
-        editTextEmail = view.findViewById(R.id.editTextEmail);
-        editTextPassword = view.findViewById(R.id.editTextPassword);
-        editTextRepeatPassword = view.findViewById(R.id.editTextRepeatPassword);
+        editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
+        editTextContenedor = view.findViewById(R.id.editTextContenedor);
         buttonInsert = view.findViewById(R.id.buttonInsert);
         buttonCancel = view.findViewById(R.id.buttonCancel);
 
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //registerItem();
-                /*((MainActivity)getActivity()).showConfirmationDialog();
-                itemModel=insertItem();
-                if(itemModel != null){
-                    Toast.makeText(getContext(), R.string.item_inserted_dialog, Toast.LENGTH_LONG).show();
-                    SelectItemFragment selectItemFragment=new SelectItemFragment(itemModel);
-                    ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
-                }
-                else {
-                    Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
-                }*/
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.confirm);
                 builder.setMessage(R.string.confirm_dialog);
@@ -97,70 +89,15 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
         });
     }
 
-
-/*
-    private void registerItem() {
-        String name = editTextNombre.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
-
-        //TODO realizar validaciones ventana
-
-        if (TextUtils.isEmpty(name)) {
-            editTextNombre.setError("Nombre es requerido");
-            return;
-        }
-
-        if (TextUtils.isEmpty(email)) {
-            editTextEmail.setError("Correo electrónico es requerido");
-            return;
-        }
-
-        if (TextUtils.isEmpty(password) || TextUtils.isEmpty(repeatPassword) || !password.equals(repeatPassword)) {
-            editTextPassword.setError("Contraseña es requerida");
-            return;
-        }
-
-
-
-        // Llamar a la API para registrar al usuario
-        itemModel = new Item(editTextEmail.getText().toString(), editTextNombre.getText().toString(), editTextEmail.getText().toString());
-        if(MainActivity.itemDao.getItem(itemModel.getEmail())==null){
-            MainActivity.itemDao.getItems().add(itemModel);
-            Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
-        }
-
-        ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<Void> call = apiService.registerItem(name, email, password);
-        call.enqueue(new Callback<Void>() {
-            @Override
-            public void onResponse(Call<Void> call, Response<Void> response) {
-                if (response.isSuccessful()) {
-                    Toast.makeText(RegisterActivity.this, "Registro exitoso", Toast.LENGTH_SHORT).show();
-                    // Navegar a otra actividad o realizar otra acción
-                } else {
-                    Toast.makeText(RegisterActivity.this, "Error en el registro: " + response.message(), Toast.LENGTH_SHORT).show();
-                }
-            }
-
-            @Override
-            public void onFailure(Call<Void> call, Throwable t) {
-                Toast.makeText(RegisterActivity.this, "Fallo en la solicitud: " + t.getMessage(), Toast.LENGTH_SHORT).show();
-                Log.e(TAG, "onFailure: ", t);
-            }
-        });
-    }*/
-
     private void insertItem(){
-
+        String sId = editTextId.getText().toString().trim();
         String name = editTextNombre.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+        String descripcion = editTextDescripcion.getText().toString().trim();
+        String sIdContenedor = editTextContenedor.getText().toString().trim();
 
         if(validateItemForm()){
-            //itemModel=new Item(email,name,password);
+            Contenedor contenedorPadre = (sIdContenedor.isEmpty())?null:new Contenedor(Long.valueOf(sIdContenedor), null, null, null, null, null);
+            itemModel=new Item(0l,name,descripcion, contenedorPadre);
             MainActivity.itemDao.insertItem(this, itemModel);
         }
         else {
@@ -169,41 +106,31 @@ public class InsertItemFragment extends Fragment implements FragmentCallback <It
     }
 
     private boolean validateItemForm(){
+        String sId = editTextId.getText().toString().trim();
         String name = editTextNombre.getText().toString().trim();
-        String email = editTextEmail.getText().toString().trim();
-        String password = editTextPassword.getText().toString().trim();
-        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+        String descripcion = editTextDescripcion.getText().toString().trim();
+        String sIdContenedor = editTextContenedor.getText().toString().trim();
 
         boolean result=true;
-
-        if(email.isEmpty()) {
-            editTextEmail.setError(R.string.email + " " + R.string.required_dialog);
-            result = false;
-        }
         if(name.isEmpty()) {
             editTextNombre.setError(R.string.name + " " + R.string.required_dialog);
             result = false;
         }
-        if(password.isEmpty()) {
-            editTextPassword.setError(R.string.password + " " + R.string.required_dialog);
-            result = false;
-        }
-        if(repeatPassword.isEmpty()) {
-            editTextRepeatPassword.setError(R.string.repeatpassword + " " + R.string.required_dialog);
-            result = false;
-        }
-        if(result && !password.equals(repeatPassword)) {
-            editTextRepeatPassword.setError("la "+R.string.password+" tiene que coincidir en los dos campos");
-            result = false;
+        if(!sIdContenedor.isEmpty()){
+            try{
+                Long.valueOf(sIdContenedor);
+            }catch (NumberFormatException e) {
+                editTextContenedor.setError(R.string.dadcontainer+ " " + R.string.notnumeric_dialog);
+                result = false;
+            }
         }
 
         return result;
     }
 
-
     @Override
     public void callbackDataAcessSuccess(Item item) {
-        //Toast.makeText(getContext(), R.string.item_inserted_dialog, Toast.LENGTH_LONG).show();
+        Toast.makeText(getContext(), R.string.item_inserted_dialog, Toast.LENGTH_LONG).show();
         itemModel=item;
         SelectItemFragment selectItemFragment=new SelectItemFragment(itemModel);
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);

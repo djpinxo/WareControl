@@ -74,41 +74,82 @@ public class UserDaoLocalBBDDImplements implements UserDao {
 
     @Override
     public void getUsers(FragmentCallback<List<User>> fragmentCallback) {
+        Thread hilo = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContenedorDaoLocalBBDDImplements.waitSimulation();
+                fragmentCallback.callbackDataAcessSuccess(getUsers());
+            }
+        });
+        hilo.start();
         fragmentCallback.callbackDataAcessSuccess(getUsers());
     }
 
     @Override
     public void getUser(FragmentCallback<User> fragmentCallback, String email) {
-        User userResult = getUser(email);
-        if(userResult != null)
-            fragmentCallback.callbackDataAcessSuccess(userResult);
-        else
-            fragmentCallback.callbackDataAcessError(userResult);
+        Thread hilo = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContenedorDaoLocalBBDDImplements.waitSimulation();
+                User userResult = getUser(email);
+                if(userResult != null)
+                    fragmentCallback.callbackDataAcessSuccess(userResult);
+                else
+                    fragmentCallback.callbackDataAcessError(userResult);
+            }
+        });
+        hilo.start();
     }
 
     @Override
     public void insertUser(FragmentCallback<User> fragmentCallback, User user) {
-        User userResult = insertUser(user);
-        if(userResult != null)
-            fragmentCallback.callbackDataAcessSuccess(userResult);
-        else
-            fragmentCallback.callbackDataAcessError(userResult);
+        Thread hilo = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContenedorDaoLocalBBDDImplements.waitSimulation();
+                User userResult = insertUser(user);
+                if(userResult != null)
+                    fragmentCallback.callbackDataAcessSuccess(userResult);
+                else
+                    fragmentCallback.callbackDataAcessError(userResult);
+            }
+        });
+        hilo.start();
     }
 
     @Override
     public void updateUser(FragmentCallback<User> fragmentCallback, User user) {
-        User userResult = updateUser(user);
-        if(userResult != null)
-            fragmentCallback.callbackDataAcessSuccess(userResult);
-        else
-            fragmentCallback.callbackDataAcessError(userResult);
+        Thread hilo = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContenedorDaoLocalBBDDImplements.waitSimulation();
+                User userResult = updateUser(user);
+                if(userResult != null)
+                    fragmentCallback.callbackDataAcessSuccess(userResult);
+                else
+                    fragmentCallback.callbackDataAcessError(userResult);
+            }
+        });
+        hilo.start();
     }
 
     @Override
     public void deleteUser(FragmentCallback<Boolean> fragmentCallback, String email) {
-        if(deleteUser(email))
-            fragmentCallback.callbackDataAcessSuccess(true);
-        else
-            fragmentCallback.callbackDataAcessError(false);
+        Thread hilo = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ContenedorDaoLocalBBDDImplements.waitSimulation();
+                if(deleteUser(email))
+                    fragmentCallback.callbackDataAcessSuccess(true);
+                else
+                    fragmentCallback.callbackDataAcessError(false);
+            }
+        });
+        hilo.start();
+    }
+
+    public static void waitSimulation(){
+        for (int i =0; i<100000; i++)
+            for (int a =0; a<10000; a++);
     }
 }

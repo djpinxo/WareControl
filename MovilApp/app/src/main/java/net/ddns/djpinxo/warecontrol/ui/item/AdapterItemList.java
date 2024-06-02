@@ -13,7 +13,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
+import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.SelectContenedorFragment;
 
 import java.util.List;
 
@@ -41,7 +43,8 @@ public class AdapterItemList extends RecyclerView.Adapter<AdapterItemList.ViewHo
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         Item item = items.get(position);
-        //holder.textViewEmail.setText(item.getEmail());
+        holder.textViewId.setText(item.getId().toString());
+        holder.textViewNombre.setText(item.getNombre().toString());
 
     }
 
@@ -51,7 +54,8 @@ public class AdapterItemList extends RecyclerView.Adapter<AdapterItemList.ViewHo
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private TextView textViewEmail;
+        private TextView textViewId;
+        private TextView textViewNombre;
         private ImageButton buttonUpdate;
         private ImageButton buttonDelete;
         private Activity activity;
@@ -60,17 +64,27 @@ public class AdapterItemList extends RecyclerView.Adapter<AdapterItemList.ViewHo
         public ViewHolder(View itemView, Activity activity) {
             super(itemView);
             this.activity = activity;
-            textViewEmail = itemView.findViewById(R.id.textViewEmail);
+            textViewId = itemView.findViewById(R.id.textViewId);
+            textViewNombre = itemView.findViewById(R.id.textViewNombre);
             buttonUpdate = itemView.findViewById(R.id.buttonUpdate);
             buttonDelete = itemView.findViewById(R.id.buttonDelete);
 
 
-            textViewEmail.setOnClickListener(new View.OnClickListener() {
+            textViewId.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(v.getContext().getApplicationContext(), "evento consulta pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
-                    //SelectItemFragment selectItemFragment=new SelectItemFragment(new Item(textViewEmail.getText().toString(), null, null));
-                    //((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
+                    SelectContenedorFragment selectContenedorFragment=new SelectContenedorFragment(new Contenedor(Long.valueOf(textViewId.getText().toString()), null, null, null, null, null));
+                    ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectContenedorFragment);
+
+                }
+
+            });
+
+            textViewNombre.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    SelectContenedorFragment selectContenedorFragment=new SelectContenedorFragment(new Contenedor(Long.valueOf(textViewId.getText().toString()), null, null, null, null, null));
+                    ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectContenedorFragment);
 
                 }
 
@@ -78,17 +92,15 @@ public class AdapterItemList extends RecyclerView.Adapter<AdapterItemList.ViewHo
             buttonUpdate.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(v.getContext().getApplicationContext(), "evento modificar pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
-                    //UpdateItemFragment updateItemFragment=new UpdateItemFragment(new Item(textViewEmail.getText().toString(), null, null));
-                    //((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, updateItemFragment);
+                    UpdateItemFragment updateItemFragment=new UpdateItemFragment(new Item(Long.valueOf(textViewId.getText().toString()), null, null, null));
+                    ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, updateItemFragment);
                 }
 
             });
             buttonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    //Toast.makeText(v.getContext().getApplicationContext(), "evento borrar pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
-                    //new DeleteItemFragment(new Item(textViewEmail.getText().toString(), null, null)).showConfirmationDialog(activity);
+                    new DeleteItemFragment(new Item(Long.valueOf(textViewId.getText().toString()), null, null, null)).showConfirmationDialog(activity);
                 }
 
             });

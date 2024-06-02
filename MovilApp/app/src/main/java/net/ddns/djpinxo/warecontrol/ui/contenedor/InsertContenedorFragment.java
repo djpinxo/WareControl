@@ -3,21 +3,23 @@ package net.ddns.djpinxo.warecontrol.ui.contenedor;
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
+import android.widget.Toast;
+
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
 public class InsertContenedorFragment extends Fragment implements FragmentCallback <Contenedor> {
 
@@ -41,6 +43,7 @@ public class InsertContenedorFragment extends Fragment implements FragmentCallba
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.contenedor_insert_title);
         editTextId = view.findViewById(R.id.editTextId);
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
@@ -51,18 +54,6 @@ public class InsertContenedorFragment extends Fragment implements FragmentCallba
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //registerContenedor();
-                /*((MainActivity)getActivity()).showConfirmationDialog();
-                contenedorModel=insertContenedor();
-                if(contenedorModel != null){
-                    Toast.makeText(getContext(), R.string.contenedor_inserted_dialog, Toast.LENGTH_LONG).show();
-                    SelectContenedorFragment selectContenedorFragment=new SelectContenedorFragment(contenedorModel);
-                    ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectContenedorFragment);
-                }
-                else {
-                    Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
-                }*/
-
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
                 builder.setTitle(R.string.confirm);
                 builder.setMessage(R.string.confirm_dialog);
@@ -97,17 +88,15 @@ public class InsertContenedorFragment extends Fragment implements FragmentCallba
         });
     }
 
-
-
     private void insertContenedor(){
-
-        //long id = Long.valueOf(editTextId.getText().toString().trim());
+        String sId = editTextId.getText().toString().trim();
         String name = editTextNombre.getText().toString().trim();
         String descripcion = editTextDescripcion.getText().toString().trim();
-        long idPadre = Long.valueOf(editTextContenedorPadre.getText().toString().trim());
+        String sIdPadre = editTextContenedorPadre.getText().toString().trim();
 
         if(validateContenedorForm()){
-            contenedorModel=new Contenedor(0l,name,descripcion,new Contenedor(idPadre, null, null, null, null, null), null, null);
+            Contenedor contenedorPadre = (sIdPadre.isEmpty())?null:new Contenedor(Long.valueOf(sIdPadre), null, null, null, null, null);
+            contenedorModel=new Contenedor(0l, name, descripcion, contenedorPadre, null, null);
             MainActivity.contenedorDao.insertContenedor(this, contenedorModel);
         }
         else {
@@ -116,22 +105,27 @@ public class InsertContenedorFragment extends Fragment implements FragmentCallba
     }
 
     private boolean validateContenedorForm(){
-        //long id = Long.valueOf(editTextId.getText().toString().trim());
+        String sId = editTextId.getText().toString().trim();
         String name = editTextNombre.getText().toString().trim();
         String descripcion = editTextDescripcion.getText().toString().trim();
-        long idPadre = Long.valueOf(editTextContenedorPadre.getText().toString().trim());
+        String sIdPadre = editTextContenedorPadre.getText().toString().trim();
 
         boolean result=true;
-
-
         if(name.isEmpty()) {
             editTextNombre.setError(R.string.name + " " + R.string.required_dialog);
             result = false;
         }
+        if(!sIdPadre.isEmpty()){
+            try{
+                Long.valueOf(sIdPadre);
+            }catch (NumberFormatException e) {
+                editTextContenedorPadre.setError(R.string.dadcontainer+ " " + R.string.notnumeric_dialog);
+                result = false;
+            }
+        }
 
         return result;
     }
-
 
     @Override
     public void callbackDataAcessSuccess(Contenedor contenedor) {

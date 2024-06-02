@@ -12,6 +12,14 @@ public class Item {
 		super();
 	}
 
+	public Item(Long id, String nombre, String descripcion, Contenedor contenedor) {
+		super();
+		this.id = id;
+		this.nombre = nombre;
+		this.descripcion = descripcion;
+		this.contenedor = contenedor;
+	}
+
 	public Item(String nombre, String descripcion) {
 		super();
 		this.nombre = nombre;

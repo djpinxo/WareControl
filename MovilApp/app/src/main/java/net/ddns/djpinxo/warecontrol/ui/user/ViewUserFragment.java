@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
@@ -26,7 +27,6 @@ public class ViewUserFragment extends Fragment implements FragmentCallback<List<
 
     private RecyclerView recyclerViewUser;
     private AdapterUserList adapter;
-    //private List<User> userList = BBDDExample.getUsers();
 
 
 
@@ -43,11 +43,11 @@ public class ViewUserFragment extends Fragment implements FragmentCallback<List<
 
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.user_view_title);
 
         recyclerViewUser = view.findViewById(R.id.recyclerViewUser);
         recyclerViewUser.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        //adapter = new AdapterUserList(MainActivity.userDao.getUsers(), getActivity());
         adapter = new AdapterUserList(new ArrayList<User>(), getActivity());
         recyclerViewUser.setAdapter(adapter);
 
@@ -75,9 +75,5 @@ public class ViewUserFragment extends Fragment implements FragmentCallback<List<
     public void callbackDataAcessError(List<User> users) {
         Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
     }
-    /*
-    private void addItem(User user) {
-        userList.add(user);
-        adapter.notifyItemInserted(userList.size() - 1);
-    }*/
+
 }
