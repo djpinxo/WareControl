@@ -1,9 +1,12 @@
 package net.ddns.djpinxo.models;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 
 @Entity
 public class Item {
@@ -15,6 +18,9 @@ public class Item {
 	@ManyToOne
 	//TODO probar para cortar la recusividad en la llamada @JsonManagedReference
 	private Contenedor contenedor;
+	@OneToOne
+	@JsonIgnore
+	private Imagen imagen;
 
 	public Item() {
 		super();
@@ -56,6 +62,14 @@ public class Item {
 
 	public void setContenedor(Contenedor contenedor) {
 		this.contenedor = contenedor;
+	}
+
+	public Imagen getImagen() {
+		return imagen;
+	}
+
+	public void setImagen(Imagen imagen) {
+		this.imagen = imagen;
 	}
 	
 

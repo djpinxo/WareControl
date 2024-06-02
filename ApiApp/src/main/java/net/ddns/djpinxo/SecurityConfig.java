@@ -1,26 +1,21 @@
 package net.ddns.djpinxo;
 
 
-import java.util.Arrays;
-import java.util.List;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.ProviderManager;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
-import org.springframework.security.crypto.factory.PasswordEncoderFactories;
+import org.springframework.security.crypto.password.NoOpPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.stereotype.Service;
 
@@ -29,43 +24,102 @@ import net.ddns.djpinxo.repositories.UsuarioRepository;
 
 @Configuration
 @EnableWebSecurity
-public class SecurityConfig extends WebSecurityConfigurerAdapter {
+public class SecurityConfig {
 
-    @Autowired
-    private UsuarioService usuarioService;
+	@Autowired
+	private UsuarioRepository usuarioRepository;
+	
+	@Bean
+	public PasswordEncoder passwordEncoder() {
+		return NoOpPasswordEncoder.getInstance();
+	}
+	
+	@Bean
+	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+		return http
+		.httpBasic()
+		.and().authorizeHttpRequests()
+		//.authorizeHttpRequests(authorize -> authorize.anyRequest().permitAll());
+		//.authorizeHttpRequests().anyRequest().permitAll();
+		//.authorizeHttpRequests().anyRequest().denyAll();
+		//.authorizeHttpRequests().anyRequest().authenticated();
+		//.authorizeHttpRequests().anyRequest().authenticated()
+		.requestMatchers("/login", "/register").permitAll()
+		.anyRequest().authenticated()
+		.and().csrf().disable()
+		.build();
+	}
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(usuarioService).passwordEncoder(passwordEncoder());
-    }
 
-    @Override
-    protected void configure(HttpSecurity http) throws Exception {
-        http
-            .csrf().disable()
-            .authorizeRequests()
-            .anyRequest().authenticated()
-            .and()
-            .httpBasic();
-    }
-
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
 }
 
 @Service
-class UsuarioService implements UserDetailsService {
+class UserDetailServicePersonalizado implements UserDetailsService{
 
-    @Autowired
+	@Autowired
     private UsuarioRepository usuarioRepository;
+	
+	@Override
+	public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+		Optional<Usuario> usuario = usuarioRepository.findById(email);
+		if (usuario.isPresent()) {
+			return new UserDetailPersonalizado(usuario.get()); 
+		}
+		throw new UsernameNotFoundException("Usuario no encontrado: " + email);
+	}
+	
+}
 
-    @Override
-    public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.findById(username)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + username));
 
-        return new User(usuario.getEmail(), usuario.getPassword(), new ArrayList<>());
-    }
+
+class UserDetailPersonalizado implements UserDetails{
+	
+	private Usuario usuario;
+	
+	public UserDetailPersonalizado(Usuario usuario) {
+		this.usuario=usuario;
+	}
+
+	@Override
+	public Collection<? extends GrantedAuthority> getAuthorities() {
+		// TODO Auto-generated method stub
+		return new ArrayList<GrantedAuthority>();
+	}
+
+	@Override
+	public String getUsername() {
+		// TODO Auto-generated method stub
+		return usuario.getEmail();
+	}
+	
+	@Override
+	public String getPassword() {
+		// TODO Auto-generated method stub
+		return usuario.getPassword();
+	}
+
+	@Override
+	public boolean isAccountNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isAccountNonLocked() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isCredentialsNonExpired() {
+		// TODO Auto-generated method stub
+		return true;
+	}
+
+	@Override
+	public boolean isEnabled() {
+		// TODO Auto-generated method stub
+		return usuario.isActive();
+	}
+	
 }

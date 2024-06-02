@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import net.ddns.djpinxo.dtos.ContenedorDTO;
@@ -27,8 +28,13 @@ public class ContenedorController {
 	//ContenedorService contenedorService;
 
 	@GetMapping("/contenedores")
-	public List<Contenedor> getContenedores() {
-		return contenedorRepository.findAll();
+	public List<Contenedor> getContenedores(@RequestParam(required = false) String query) {
+		if (query==null) {
+			return contenedorRepository.findAll();
+		}
+		else {
+			return contenedorRepository.findByNombreContainsIgnoreCaseOrDescripcionContainsIgnoreCase(query, query);
+		}
 	}
 
 	@GetMapping("/contenedores/{id}")
@@ -48,8 +54,11 @@ public class ContenedorController {
 	@PutMapping("/contenedores/{id}")
 	public Optional<Contenedor> putContenedor(@RequestBody Contenedor contenedor,@PathVariable Long id) {
 		Optional<Contenedor> contenedorSaved = contenedorRepository.findById(id);
-		if (!contenedorSaved.isEmpty()) {
-			contenedor.setId(id);
+		if (contenedorSaved.isPresent()) {
+			contenedorSaved.get().setNombre(contenedor.getNombre());
+			contenedorSaved.get().setDescripcion(contenedor.getDescripcion());
+			contenedorSaved.get().setContenedorPadre(contenedor.getContenedorPadre());
+			//contenedor.setId(id);
 			contenedorSaved =Optional.of(contenedor);
 			contenedorRepository.save(contenedor);
 		}
