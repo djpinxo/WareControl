@@ -8,7 +8,6 @@
     tools:context=".MainActivity">
 
 
-
     <LinearLayout
         android:id="@+id/LinearLayoutContenedorDeFragment"
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical" />
 
 
 </LinearLayout>

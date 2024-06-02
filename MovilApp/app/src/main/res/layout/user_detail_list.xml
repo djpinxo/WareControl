@@ -10,24 +10,24 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:text="Email"
+        android:text="@string/email"
         android:textSize="18sp" />
 
     <ImageButton
-        android:id="@+id/buttonModificar"
+        android:id="@+id/buttonUpdate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/lapiz"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="descripcion" />
+        android:contentDescription="@string/update" />
 
     <ImageButton
-        android:id="@+id/buttonBorrar"
+        android:id="@+id/buttonDelete"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:src="@drawable/papelera"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:contentDescription="descripcion" />
+        android:contentDescription="@string/delete" />
 
 
 

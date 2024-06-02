@@ -9,6 +9,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.ui.AppBarConfiguration;
@@ -16,7 +17,7 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import android.widget.Button;
 
-import net.ddns.djpinxo.warecontrol.ui.login.LoginFragment;
+import net.ddns.djpinxo.warecontrol.ui.user.ViewUserFragment;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -48,17 +49,25 @@ public class MainActivity extends AppCompatActivity {
             });
         }
         else {
-            Log.println(Log.INFO, this.getPackageName(), "usuario logado");
+            Log.d(this.getPackageName(), "usuario logado");
             FragmentManager fragmentManager=getSupportFragmentManager();
             FragmentTransaction transaction=fragmentManager.beginTransaction();
-            LoginFragment loginFragment=new LoginFragment();
+            ViewUserFragment viewUserFragment=new ViewUserFragment();
 
-            transaction.add(R.id.LinearLayoutContenedorDeFragment, loginFragment);
+            transaction.add(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
             transaction.commit();
         }
 
 
 
+    }
+
+    public void changeFragment (int LayoutContenedorDeFragment, Fragment fragment){
+        FragmentManager fragmentManager=getSupportFragmentManager();
+        FragmentTransaction transaction=fragmentManager.beginTransaction();
+
+        transaction.replace(LayoutContenedorDeFragment, fragment);
+        transaction.commit();
     }
 
 
