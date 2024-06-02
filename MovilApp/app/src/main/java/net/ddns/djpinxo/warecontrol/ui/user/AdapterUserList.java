@@ -77,7 +77,7 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.ViewHo
                 @Override
                 public void onClick(View v) {
                     //Toast.makeText(v.getContext().getApplicationContext(), "evento modificar pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
-                    UpdateUserFragment updateUserFragment=new UpdateUserFragment(userModel);
+                    UpdateUserFragment updateUserFragment=new UpdateUserFragment(new User(textViewEmail.getText().toString(), null, null));
                     ((MainActivity)activity).changeFragment(R.id.LinearLayoutContenedorDeFragment, updateUserFragment);
                 }
 
@@ -85,12 +85,11 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.ViewHo
             buttonDelete.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    Toast.makeText(v.getContext().getApplicationContext(), "evento borrar pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
+                    //Toast.makeText(v.getContext().getApplicationContext(), "evento borrar pulsado"+textViewEmail.getText(), Toast.LENGTH_LONG).show();
+                    new DeleteUserFragment(new User(textViewEmail.getText().toString(), null, null)).showConfirmationDialog(activity);
                 }
 
             });
-
-            userModel = new User(textViewEmail.getText().toString(), null, null);
 
         }
     }

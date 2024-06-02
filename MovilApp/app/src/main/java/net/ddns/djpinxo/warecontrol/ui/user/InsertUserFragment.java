@@ -16,7 +16,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import net.ddns.djpinxo.warecontrol.BBDDExample;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
@@ -53,10 +52,17 @@ public class InsertUserFragment extends Fragment {
         buttonInsert.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
-
-                SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
-                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+                //registerUser();
+                ((MainActivity)getActivity()).showConfirmationDialog();
+                userModel=insertUser();
+                if(userModel != null){
+                    Toast.makeText(getContext(), R.string.user_inserted_dialog, Toast.LENGTH_LONG).show();
+                    SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
+                    ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+                }
+                else {
+                    Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
+                }
             }
 
         });
@@ -100,8 +106,8 @@ public class InsertUserFragment extends Fragment {
 
         // Llamar a la API para registrar al usuario
         userModel = new User(editTextEmail.getText().toString(), editTextName.getText().toString(), editTextEmail.getText().toString());
-        if(BBDDExample.getUser(userModel.getEmail())==null){
-            BBDDExample.getUsers().add(userModel);
+        if(MainActivity.userDao.getUser(userModel.getEmail())==null){
+            MainActivity.userDao.getUsers().add(userModel);
             Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
         }
         /*
@@ -124,6 +130,54 @@ public class InsertUserFragment extends Fragment {
                 Log.e(TAG, "onFailure: ", t);
             }
         });*/
+    }
+
+    private User insertUser(){
+
+        String name = editTextName.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+
+        if(validateUserForm()){
+            userModel=new User(email,name,password);
+            return MainActivity.userDao.insertUser(userModel);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private boolean validateUserForm(){
+        String name = editTextName.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+
+        boolean result=true;
+
+        if(email.isEmpty()) {
+            editTextEmail.setError(R.string.email + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(name.isEmpty()) {
+            editTextName.setError(R.string.name + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(password.isEmpty()) {
+            editTextPassword.setError(R.string.password + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(repeatPassword.isEmpty()) {
+            editTextRepeatPassword.setError(R.string.repeatpassword + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(result && !password.equals(repeatPassword)) {
+            editTextRepeatPassword.setError("la "+R.string.password+" tiene que coincidir en los dos campos");
+            result = false;
+        }
+
+        return result;
     }
 
 

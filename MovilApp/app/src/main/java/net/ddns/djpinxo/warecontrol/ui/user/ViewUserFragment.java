@@ -15,7 +15,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Toast;
 
-import net.ddns.djpinxo.warecontrol.BBDDExample;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
@@ -49,7 +48,7 @@ public class ViewUserFragment extends Fragment {
         recyclerViewUser = view.findViewById(R.id.recyclerViewUser);
         recyclerViewUser.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        adapter = new AdapterUserList(BBDDExample.getUsers(), getActivity());
+        adapter = new AdapterUserList(MainActivity.userDao.getUsers(), getActivity());
         recyclerViewUser.setAdapter(adapter);
 
 

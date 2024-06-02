@@ -17,7 +17,6 @@ import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.Toast;
 
-import net.ddns.djpinxo.warecontrol.BBDDExample;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
@@ -38,7 +37,7 @@ public class SelectUserFragment extends Fragment {
     }
     public SelectUserFragment (User userModel){
         this();
-        this.userModel = BBDDExample.getUser(userModel.getEmail());
+        this.userModel = MainActivity.userDaoApi.getUser(userModel.getEmail());
 
     }
 
@@ -73,6 +72,8 @@ public class SelectUserFragment extends Fragment {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                new DeleteUserFragment(userModel).showConfirmationDialog(getActivity());
                 //BBDDExample.getUsers().add(new User(editTextEmail.getText().toString(), editTextName.getText().toString(), editTextEmail.getText().toString()));
                 //Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
 

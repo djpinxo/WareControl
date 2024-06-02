@@ -6,10 +6,20 @@
     <string name="email">Correo</string>
     <string name="password">Contraseña</string>
     <string name="logo">Logo</string>
+    <string name="repeatpassword">Repita ls Contraseña</string>
     <string name="name">Nombre</string>
     <string name="back">Atras</string>
     <string name="insert">Alta</string>
     <string name="update">Modificar</string>
     <string name="delete">Borrar</string>
     <string name="cancel">Cancelar</string>
+    <string name="confirm">Confirmar</string>
+    <string name="yes">Si</string>
+    <string name="no">No</string>
+    <string name="confirm_dialog">¿Estás seguro de que quieres guardar los cambios?</string>
+    <string name="user_updated_dialog">¡Usuario actualizado!</string>
+    <string name="user_deleted_dialog">¡Usuario borrado!</string>
+    <string name="error_dialog">¡Hubo un error en la operacion!</string>
+    <string name="user_inserted_dialog">¡Usuario guardado!</string>
+    <string name="required_dialog">es requerido</string>
 </resources>

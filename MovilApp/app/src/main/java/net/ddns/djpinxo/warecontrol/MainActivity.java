@@ -1,5 +1,7 @@
 package net.ddns.djpinxo.warecontrol;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 
@@ -17,18 +19,33 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import android.widget.Button;
 
+import net.ddns.djpinxo.warecontrol.data.daos.UserDao;
+import net.ddns.djpinxo.warecontrol.data.daosimplements.api.ApiClient;
+import net.ddns.djpinxo.warecontrol.data.daosimplements.api.UserDaoApiImplement;
+import net.ddns.djpinxo.warecontrol.data.daosimplements.local.UserDaoLocalBBDDImplements;
 import net.ddns.djpinxo.warecontrol.ui.user.ViewUserFragment;
 
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration appBarConfiguration;
 
+    public static UserDao userDao;
+    public static UserDao userDaoApi;
+
+    public MainActivity(){
+        super();
+        userDao=new UserDaoLocalBBDDImplements();
+        userDaoApi=new UserDaoApiImplement();
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_main);
+
+        ApiClient.getClient(this);
+        ApiClient.getClient((String)null);
 
         //TODO revisar si esta logado mandar a un controller o a otro
         if (false){
@@ -68,6 +85,31 @@ public class MainActivity extends AppCompatActivity {
 
         transaction.replace(LayoutContenedorDeFragment, fragment);
         transaction.commit();
+    }
+
+    public void showConfirmationDialog() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(R.string.confirm);
+        builder.setMessage(R.string.confirm_dialog);
+
+        builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Acción a realizar si el usuario confirma
+
+            }
+        });
+
+        builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                // Acción a realizar si el usuario cancela
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 

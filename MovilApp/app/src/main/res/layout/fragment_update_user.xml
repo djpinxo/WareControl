@@ -67,7 +67,7 @@
             android:layout_height="wrap_content"
             android:hint="@string/password"
             android:inputType="textPassword"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/textViewPassword"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -76,7 +76,7 @@
             android:id="@+id/textViewRepeatPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Repeat @string/password"
+            android:text="@string/repeatpassword"
             app:layout_constraintTop_toBottomOf="@id/editTextPassword"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -85,9 +85,9 @@
             android:id="@+id/editTextRepeatPassword"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="Repeat @string/password"
+            android:hint="@string/repeatpassword"
             android:inputType="textPassword"
-            android:layout_marginBottom="16dp"
+            android:layout_marginBottom="8dp"
             app:layout_constraintTop_toBottomOf="@id/textViewRepeatPassword"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent" />
@@ -96,14 +96,13 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="end"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             android:layout_marginBottom="0dp">
 
             <Button
-                android:id="@+id/buttonUpdate1"
+                android:id="@+id/buttonUpdate"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"

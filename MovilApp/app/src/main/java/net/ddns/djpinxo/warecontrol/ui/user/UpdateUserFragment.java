@@ -14,7 +14,6 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import net.ddns.djpinxo.warecontrol.BBDDExample;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
@@ -34,7 +33,7 @@ public class UpdateUserFragment extends Fragment {
     }
     public UpdateUserFragment (User userModel){
         this();
-        this.userModel = BBDDExample.getUser(userModel.getEmail());
+        this.userModel = MainActivity.userDao.getUser(userModel.getEmail());
 
     }
 
@@ -45,7 +44,7 @@ public class UpdateUserFragment extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_insert_user, container, false);
+        return inflater.inflate(R.layout.fragment_update_user, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -59,10 +58,18 @@ public class UpdateUserFragment extends Fragment {
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                registerUser();
-
-                SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
-                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+                ((MainActivity)getActivity()).showConfirmationDialog();
+                //registerUser();
+                //TODO corregir si no hay user en bbdd da error
+                userModel = updateUser();
+                if(userModel!=null){
+                    Toast.makeText(getContext(), R.string.user_updated_dialog, Toast.LENGTH_LONG).show();
+                    SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
+                    ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+                }
+                else {
+                    Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
+                }
             }
 
         });
@@ -75,6 +82,10 @@ public class UpdateUserFragment extends Fragment {
             }
 
         });
+
+        editTextEmail.setText(userModel.getEmail());
+        editTextName.setText(userModel.getNombre());
+        editTextPassword.setText(userModel.getPassword());
     }
 
 
@@ -85,7 +96,7 @@ public class UpdateUserFragment extends Fragment {
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
 
-        //TODO realizar validaciones ventana
+
         /*
         if (TextUtils.isEmpty(name)) {
             editTextName.setError("Nombre es requerido");
@@ -106,7 +117,7 @@ public class UpdateUserFragment extends Fragment {
 
         // Llamar a la API para registrar al usuario
         //userModel = new User(editTextEmail.getText().toString(), editTextName.getText().toString(), editTextEmail.getText().toString());
-        userModel = BBDDExample.getUser(editTextEmail.getText().toString());
+        userModel = MainActivity.userDao.getUser(editTextEmail.getText().toString());
         if(userModel!=null) {
             userModel.setNombre(editTextName.getText().toString());
             userModel.setPassword(editTextPassword.getText().toString());
@@ -133,6 +144,51 @@ public class UpdateUserFragment extends Fragment {
             }
         });*/
 
-        //TODO realizar validaciones
+    }
+
+    private User updateUser(){
+        String name = editTextName.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+
+        if(validateUserForm()){
+            userModel=new User(email,name,password);
+            return MainActivity.userDao.updateUser(userModel);
+        }
+        else {
+            return null;
+        }
+    }
+
+    private boolean validateUserForm() {
+        String name = editTextName.getText().toString().trim();
+        String email = editTextEmail.getText().toString().trim();
+        String password = editTextPassword.getText().toString().trim();
+        String repeatPassword = editTextRepeatPassword.getText().toString().trim();
+
+        boolean result = true;
+        if(email.isEmpty()) {
+            editTextEmail.setError(R.string.email + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(name.isEmpty()) {
+            editTextName.setError(R.string.name + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(password.isEmpty()) {
+            editTextPassword.setError(R.string.password + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(repeatPassword.isEmpty()) {
+            editTextRepeatPassword.setError(R.string.repeatpassword + " " + R.string.required_dialog);
+            result = false;
+        }
+        if(result && !password.equals(repeatPassword)) {
+            editTextRepeatPassword.setError("la "+R.string.password+" tiene que coincidir en los dos campos");
+            result = false;
+        }
+
+        return result;
     }
 }

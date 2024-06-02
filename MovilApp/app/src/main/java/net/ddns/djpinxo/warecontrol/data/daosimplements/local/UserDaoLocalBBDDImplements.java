@@ -1,15 +1,17 @@
-/*package net.ddns.djpinxo.warecontrol;
+package net.ddns.djpinxo.warecontrol.data.daosimplements.local;
 
+import net.ddns.djpinxo.warecontrol.data.daos.UserDao;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class BBDDExample {
+public class UserDaoLocalBBDDImplements implements UserDao {
 
     private static List<User> users;
 
-    public static List<User> getUsers() {
+    public UserDaoLocalBBDDImplements(){
+        super();
         if (users==null){
             users = new ArrayList<User>();
             int numeroUsuarios=40;
@@ -17,11 +19,14 @@ public class BBDDExample {
                 users.add(new User("usuario"+i+"@localhost.com", "usuario"+i, "contraseña"+i));
             }
         }
+    }
+
+    public List<User> getUsers() {
         return users;
     }
 
-    public static User getUser(String email) {
-        ArrayList <User> usersTemp = (ArrayList)getUsers();
+    public User getUser(String email) {
+        List <User> usersTemp = getUsers();
         User result=null;
         for (User user : usersTemp){
             if(user.getEmail().equals(email)){
@@ -33,7 +38,7 @@ public class BBDDExample {
         return result;
     }
 
-    public static User insertUser(User userTemp){
+    public User insertUser(User userTemp){
         User result = getUser(userTemp.getEmail());
         if (result == null && !userTemp.getEmail().trim().equals("")){
             getUsers().add(userTemp);
@@ -42,7 +47,7 @@ public class BBDDExample {
         return result;
     }
 
-    public static User updateUser(User userTemp){
+    public User updateUser(User userTemp){
         User result = getUser(userTemp.getEmail());
         if (result != null){
             result.setNombre(userTemp.getNombre());
@@ -51,7 +56,7 @@ public class BBDDExample {
         return result;
     }
 
-    public static boolean deleteUser(String email){
+    public boolean deleteUser(String email){
         boolean result=false;
         User userTemp = getUser(email);
         if (userTemp != null){
@@ -60,6 +65,4 @@ public class BBDDExample {
         }
         return result;
     }
-
 }
-*/
