@@ -1,5 +1,6 @@
 package net.ddns.djpinxo.warecontrol.ui.user;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -27,6 +28,11 @@ public class AdapterUserList extends RecyclerView.Adapter<AdapterUserList.ViewHo
     public AdapterUserList(List<User> users, Activity activity) {
         this.users = users;
         this.activity = activity;
+    }
+    @SuppressLint("NotifyDataSetChanged")
+    public void updateData(List<User> users) {
+        this.users = users;
+        this.notifyDataSetChanged();
     }
 
     @NonNull

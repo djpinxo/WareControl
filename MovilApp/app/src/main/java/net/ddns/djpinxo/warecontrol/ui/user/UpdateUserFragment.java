@@ -1,12 +1,13 @@
 package net.ddns.djpinxo.warecontrol.ui.user;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,11 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 
-public class UpdateUserFragment extends Fragment {
+public class UpdateUserFragment extends Fragment implements FragmentCallback<User> {
 
     private EditText editTextName;
     private EditText editTextEmail;
@@ -27,13 +29,15 @@ public class UpdateUserFragment extends Fragment {
     private Button buttonUpdate;
     private Button buttonCancel;
     private User userModel;
+    private boolean isUpdating=false;
 
     public UpdateUserFragment(){
         super();
     }
     public UpdateUserFragment (User userModel){
         this();
-        this.userModel = MainActivity.userDao.getUser(userModel.getEmail());
+        //this.userModel = MainActivity.userDao.getUser(userModel.getEmail());
+        this.userModel=userModel;
 
     }
 
@@ -58,7 +62,28 @@ public class UpdateUserFragment extends Fragment {
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ((MainActivity)getActivity()).showConfirmationDialog();
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.confirm);
+                builder.setMessage(R.string.confirm_dialog);
+
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        updateUser();
+                    }
+                });
+
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
+            }
+                /*((MainActivity)getActivity()).showConfirmationDialog();
                 //registerUser();
                 //TODO corregir si no hay user en bbdd da error
                 userModel = updateUser();
@@ -71,7 +96,7 @@ public class UpdateUserFragment extends Fragment {
                     Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
                 }
             }
-
+*/
         });
 
         buttonCancel.setOnClickListener(new View.OnClickListener() {
@@ -83,13 +108,16 @@ public class UpdateUserFragment extends Fragment {
 
         });
 
+        /*
         editTextEmail.setText(userModel.getEmail());
         editTextName.setText(userModel.getNombre());
-        editTextPassword.setText(userModel.getPassword());
+        editTextPassword.setText(userModel.getPassword());*/
+        isUpdating=false;
+        MainActivity.userDao.getUser(this, userModel.getEmail());
     }
 
 
-
+/*
     private void registerUser() {
         String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
@@ -111,7 +139,7 @@ public class UpdateUserFragment extends Fragment {
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(repeatPassword) || !password.equals(repeatPassword)) {
             editTextPassword.setError("Contraseña es requerida");
             return;
-        }*/
+        }
 
 
 
@@ -142,11 +170,11 @@ public class UpdateUserFragment extends Fragment {
                 Toast.makeText(RegisterActivity.this, "Fallo en la solicitud: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: ", t);
             }
-        });*/
+        });
 
-    }
+    }*/
 
-    private User updateUser(){
+    private void updateUser(){
         String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -154,10 +182,11 @@ public class UpdateUserFragment extends Fragment {
 
         if(validateUserForm()){
             userModel=new User(email,name,password);
-            return MainActivity.userDao.updateUser(userModel);
+            isUpdating=true;
+            MainActivity.userDao.updateUser(this, userModel);
         }
         else {
-            return null;
+            //Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -190,5 +219,27 @@ public class UpdateUserFragment extends Fragment {
         }
 
         return result;
+    }
+
+    @Override
+    public void callbackDataAcessSuccess(User user) {
+        userModel = user;
+        editTextEmail.setText(userModel.getEmail());
+        editTextName.setText(userModel.getNombre());
+        editTextPassword.setText(userModel.getPassword());
+        if(isUpdating) {
+            Toast.makeText(getContext(), R.string.user_updated_dialog, Toast.LENGTH_LONG).show();
+            SelectUserFragment selectUserFragment = new SelectUserFragment(userModel);
+            ((MainActivity) getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+        }
+        else if (!isUpdating) {
+            ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
+        }
+        isUpdating=false;
+    }
+
+    @Override
+    public void callbackDataAcessError(User user) {
+        Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
     }
 }

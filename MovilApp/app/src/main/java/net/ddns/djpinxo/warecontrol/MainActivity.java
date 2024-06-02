@@ -30,12 +30,10 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
 
     public static UserDao userDao;
-    public static UserDao userDaoApi;
 
     public MainActivity(){
         super();
-        userDao=new UserDaoLocalBBDDImplements();
-        userDaoApi=new UserDaoApiImplement();
+        userDao=new UserDaoApiImplement();
     }
 
     @Override

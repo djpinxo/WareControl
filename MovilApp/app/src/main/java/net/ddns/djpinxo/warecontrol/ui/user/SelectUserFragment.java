@@ -5,23 +5,19 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
-import android.widget.Toast;
 
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 
-public class SelectUserFragment extends Fragment {
+public class SelectUserFragment extends Fragment implements FragmentCallback<User> {
 
 
     private EditText editTextName;
@@ -37,7 +33,7 @@ public class SelectUserFragment extends Fragment {
     }
     public SelectUserFragment (User userModel){
         this();
-        this.userModel = MainActivity.userDaoApi.getUser(userModel.getEmail());
+        this.userModel=userModel;
 
     }
 
@@ -62,8 +58,6 @@ public class SelectUserFragment extends Fragment {
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //BBDDExample.getUsers().add(new User(editTextEmail.getText().toString(), editTextName.getText().toString(), editTextEmail.getText().toString()));
-                //Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
                 UpdateUserFragment updateUserFragment=new UpdateUserFragment(userModel);
                 ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, updateUserFragment);
             }
@@ -72,14 +66,7 @@ public class SelectUserFragment extends Fragment {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 new DeleteUserFragment(userModel).showConfirmationDialog(getActivity());
-                //BBDDExample.getUsers().add(new User(editTextEmail.getText().toString(), editTextName.getText().toString(), editTextEmail.getText().toString()));
-                //Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
-
-                //ViewUserFragment viewUserFragment=new ViewUserFragment();
-
-                //((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
             }
 
         });
@@ -87,23 +74,27 @@ public class SelectUserFragment extends Fragment {
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //BBDDExample.getUsers().add(new User(editTextEmail.getText().toString(), editTextName.getText().toString(), editTextEmail.getText().toString()));
-                //Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
-
                 ViewUserFragment viewUserFragment=new ViewUserFragment();
-
                 ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
             }
 
         });
 
+        MainActivity.userDao.getUser(this, userModel.getEmail());
+    }
+
+    public void callbackDataAcessSuccess(User user){
+        userModel = user;
         editTextEmail.setText(userModel.getEmail());
         editTextName.setText(userModel.getNombre());
         editTextPassword.setText(userModel.getPassword());
+        ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 
-
-
+    public void callbackDataAcessError(User user){
+        ViewUserFragment viewUserFragment=new ViewUserFragment();
+        ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
+    }
 
 
 }

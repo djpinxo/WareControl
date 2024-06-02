@@ -1,14 +1,15 @@
 package net.ddns.djpinxo.warecontrol.data.daos;
 
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 
 import java.util.List;
 
 public interface UserDao {
 
-    public List<User> getUsers();
-    public User getUser(String email);
-    public User insertUser(User user);
-    public User updateUser(User user);
-    public boolean deleteUser(String email);
+    public void getUsers(FragmentCallback<List<User>> fragmentCallback);
+    public void getUser(FragmentCallback<User> fragmentCallback, String email);
+    public void insertUser(FragmentCallback<User> fragmentCallback, User user);
+    public void updateUser(FragmentCallback<User> fragmentCallback, User user);
+    public void deleteUser(FragmentCallback<Boolean> fragmentCallback, String email);
 }

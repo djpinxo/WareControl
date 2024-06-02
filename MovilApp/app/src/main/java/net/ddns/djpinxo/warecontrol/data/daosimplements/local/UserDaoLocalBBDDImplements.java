@@ -1,5 +1,6 @@
 package net.ddns.djpinxo.warecontrol.data.daosimplements.local;
 
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.data.daos.UserDao;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 
@@ -20,6 +21,7 @@ public class UserDaoLocalBBDDImplements implements UserDao {
             }
         }
     }
+
 
     public List<User> getUsers() {
         return users;
@@ -42,9 +44,12 @@ public class UserDaoLocalBBDDImplements implements UserDao {
         User result = getUser(userTemp.getEmail());
         if (result == null && !userTemp.getEmail().trim().equals("")){
             getUsers().add(userTemp);
-            result = userTemp;
+            return userTemp;
         }
-        return result;
+        else {
+            return null;
+        }
+        //return result;
     }
 
     public User updateUser(User userTemp){
@@ -64,5 +69,46 @@ public class UserDaoLocalBBDDImplements implements UserDao {
             result=true;
         }
         return result;
+    }
+
+
+    @Override
+    public void getUsers(FragmentCallback<List<User>> fragmentCallback) {
+        fragmentCallback.callbackDataAcessSuccess(getUsers());
+    }
+
+    @Override
+    public void getUser(FragmentCallback<User> fragmentCallback, String email) {
+        User userResult = getUser(email);
+        if(userResult != null)
+            fragmentCallback.callbackDataAcessSuccess(userResult);
+        else
+            fragmentCallback.callbackDataAcessError(userResult);
+    }
+
+    @Override
+    public void insertUser(FragmentCallback<User> fragmentCallback, User user) {
+        User userResult = insertUser(user);
+        if(userResult != null)
+            fragmentCallback.callbackDataAcessSuccess(userResult);
+        else
+            fragmentCallback.callbackDataAcessError(userResult);
+    }
+
+    @Override
+    public void updateUser(FragmentCallback<User> fragmentCallback, User user) {
+        User userResult = updateUser(user);
+        if(userResult != null)
+            fragmentCallback.callbackDataAcessSuccess(userResult);
+        else
+            fragmentCallback.callbackDataAcessError(userResult);
+    }
+
+    @Override
+    public void deleteUser(FragmentCallback<Boolean> fragmentCallback, String email) {
+        if(deleteUser(email))
+            fragmentCallback.callbackDataAcessSuccess(true);
+        else
+            fragmentCallback.callbackDataAcessError(false);
     }
 }

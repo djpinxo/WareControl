@@ -1,14 +1,13 @@
 package net.ddns.djpinxo.warecontrol.ui.user;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
 
-import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,11 +15,12 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
 
-public class InsertUserFragment extends Fragment {
+public class InsertUserFragment extends Fragment implements FragmentCallback <User> {
 
     private EditText editTextName;
     private EditText editTextEmail;
@@ -53,7 +53,7 @@ public class InsertUserFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 //registerUser();
-                ((MainActivity)getActivity()).showConfirmationDialog();
+                /*((MainActivity)getActivity()).showConfirmationDialog();
                 userModel=insertUser();
                 if(userModel != null){
                     Toast.makeText(getContext(), R.string.user_inserted_dialog, Toast.LENGTH_LONG).show();
@@ -62,7 +62,28 @@ public class InsertUserFragment extends Fragment {
                 }
                 else {
                     Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
-                }
+                }*/
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+                builder.setTitle(R.string.confirm);
+                builder.setMessage(R.string.confirm_dialog);
+
+                builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        insertUser();
+                    }
+                });
+
+                builder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+
+                AlertDialog dialog = builder.create();
+                dialog.show();
             }
 
         });
@@ -78,7 +99,7 @@ public class InsertUserFragment extends Fragment {
     }
 
 
-
+/*
     private void registerUser() {
         String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
@@ -86,7 +107,7 @@ public class InsertUserFragment extends Fragment {
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
 
         //TODO realizar validaciones ventana
-        /*
+
         if (TextUtils.isEmpty(name)) {
             editTextName.setError("Nombre es requerido");
             return;
@@ -100,7 +121,7 @@ public class InsertUserFragment extends Fragment {
         if (TextUtils.isEmpty(password) || TextUtils.isEmpty(repeatPassword) || !password.equals(repeatPassword)) {
             editTextPassword.setError("Contraseña es requerida");
             return;
-        }*/
+        }
 
 
 
@@ -110,7 +131,7 @@ public class InsertUserFragment extends Fragment {
             MainActivity.userDao.getUsers().add(userModel);
             Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
         }
-        /*
+
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
         Call<Void> call = apiService.registerUser(name, email, password);
         call.enqueue(new Callback<Void>() {
@@ -129,10 +150,10 @@ public class InsertUserFragment extends Fragment {
                 Toast.makeText(RegisterActivity.this, "Fallo en la solicitud: " + t.getMessage(), Toast.LENGTH_SHORT).show();
                 Log.e(TAG, "onFailure: ", t);
             }
-        });*/
-    }
+        });
+    }*/
 
-    private User insertUser(){
+    private void insertUser(){
 
         String name = editTextName.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
@@ -141,10 +162,10 @@ public class InsertUserFragment extends Fragment {
 
         if(validateUserForm()){
             userModel=new User(email,name,password);
-            return MainActivity.userDao.insertUser(userModel);
+            MainActivity.userDao.insertUser(this, userModel);
         }
         else {
-            return null;
+            //Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
         }
     }
 
@@ -181,4 +202,15 @@ public class InsertUserFragment extends Fragment {
     }
 
 
+    @Override
+    public void callbackDataAcessSuccess(User object) {
+        Toast.makeText(getContext(), R.string.user_inserted_dialog, Toast.LENGTH_LONG).show();
+        SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
+        ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+    }
+
+    @Override
+    public void callbackDataAcessError(User object) {
+        Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
+    }
 }
