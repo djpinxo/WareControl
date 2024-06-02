@@ -3,5 +3,13 @@
     <style name="Base.Theme.WareControl" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your dark theme here. -->
         <!-- <item name="colorPrimary">@color/my_dark_primary</item> -->
+        <item name="colorPrimary">#AA7fc60f</item>
+    </style>
+    <style name="botonesColorText">
+        <item name="android:tint">@color/m3_dark_default_color_primary_text</item>
+    </style>
+
+    <style name="logoBackGroundAlpha">
+        <item name="android:alpha">0.1</item>
     </style>
 </resources>

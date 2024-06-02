@@ -3,9 +3,9 @@ package net.ddns.djpinxo.warecontrol.data.daosimplements.api;
 
 import android.util.Log;
 
+import net.ddns.djpinxo.warecontrol.data.daos.ContenedorDao;
+import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
-import net.ddns.djpinxo.warecontrol.data.daos.UserDao;
-import net.ddns.djpinxo.warecontrol.data.model.User;
 
 import java.util.List;
 
@@ -13,21 +13,21 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class UserDaoApiImplement implements UserDao {
+public class ContenedorDaoApiImplement implements ContenedorDao {
 
 
-    private User user = null;
+    private Contenedor contenedor = null;
 
 
     @Override
-    public void getUsers(FragmentCallback<List<User>> fragmentCallback) {
+    public void getContenedores(FragmentCallback<List<Contenedor>> fragmentCallback) {
         ApiService apiService = ApiClient.getClient("").create(ApiService.class);
-        Call <List<User>> call = apiService.getUsers();
+        Call <List<Contenedor>> call = apiService.getContenedores();
 
 
-        call.enqueue(new Callback<List<User>>() {
+        call.enqueue(new Callback<List<Contenedor>>() {
             @Override
-            public void onResponse(Call<List<User>> call, Response<List<User>> response) {
+            public void onResponse(Call<List<Contenedor>> call, Response<List<Contenedor>> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     fragmentCallback.callbackDataAcessSuccess(response.body());
                 }
@@ -37,7 +37,7 @@ public class UserDaoApiImplement implements UserDao {
             }
 
             @Override
-            public void onFailure(Call<List<User>> call, Throwable t) {
+            public void onFailure(Call<List<Contenedor>> call, Throwable t) {
                 Log.w(this.getClass().getName(), t.getMessage());
                 fragmentCallback.callbackDataAcessError(null);
             }
@@ -45,14 +45,14 @@ public class UserDaoApiImplement implements UserDao {
     }
 
     @Override
-    public void getUser(FragmentCallback<User> fragmentCallback, String email) {
+    public void getContenedor(FragmentCallback<Contenedor> fragmentCallback, long id) {
         ApiService apiService = ApiClient.getClient("").create(ApiService.class);
-        Call <User> call = apiService.getUser(email);
+        Call <Contenedor> call = apiService.getContenedor(id);
 
 
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<Contenedor>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<Contenedor> call, Response<Contenedor> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     fragmentCallback.callbackDataAcessSuccess(response.body());
                 }
@@ -62,7 +62,7 @@ public class UserDaoApiImplement implements UserDao {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<Contenedor> call, Throwable t) {
                 Log.w(this.getClass().getName(), t.getMessage());
                 fragmentCallback.callbackDataAcessError(null);
             }
@@ -70,14 +70,14 @@ public class UserDaoApiImplement implements UserDao {
     }
 
     @Override
-    public void insertUser(FragmentCallback<User> fragmentCallback, User user) {
+    public void insertContenedor(FragmentCallback<Contenedor> fragmentCallback, Contenedor contenedor) {
         ApiService apiService = ApiClient.getClient("").create(ApiService.class);
-        Call <User> call = apiService.insertUser(user);
+        Call <Contenedor> call = apiService.insertContenedor(contenedor);
 
 
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<Contenedor>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<Contenedor> call, Response<Contenedor> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     fragmentCallback.callbackDataAcessSuccess(response.body());
                 }
@@ -87,7 +87,7 @@ public class UserDaoApiImplement implements UserDao {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<Contenedor> call, Throwable t) {
                 Log.w(this.getClass().getName(), t.getMessage());
                 fragmentCallback.callbackDataAcessError(null);
             }
@@ -95,14 +95,14 @@ public class UserDaoApiImplement implements UserDao {
     }
 
     @Override
-    public void updateUser(FragmentCallback<User> fragmentCallback, User user) {
+    public void updateContenedor(FragmentCallback<Contenedor> fragmentCallback, Contenedor contenedor) {
         ApiService apiService = ApiClient.getClient("").create(ApiService.class);
-        Call <User> call = apiService.updateUser(user.getEmail(), user);
+        Call <Contenedor> call = apiService.updateContenedor(contenedor.getId(), contenedor);
 
 
-        call.enqueue(new Callback<User>() {
+        call.enqueue(new Callback<Contenedor>() {
             @Override
-            public void onResponse(Call<User> call, Response<User> response) {
+            public void onResponse(Call<Contenedor> call, Response<Contenedor> response) {
                 if (response.isSuccessful() && response.body() != null) {
                     fragmentCallback.callbackDataAcessSuccess(response.body());
                 }
@@ -112,7 +112,7 @@ public class UserDaoApiImplement implements UserDao {
             }
 
             @Override
-            public void onFailure(Call<User> call, Throwable t) {
+            public void onFailure(Call<Contenedor> call, Throwable t) {
                 Log.w(this.getClass().getName(), t.getMessage());
                 fragmentCallback.callbackDataAcessError(null);
             }
@@ -120,9 +120,9 @@ public class UserDaoApiImplement implements UserDao {
     }
 
     @Override
-    public void deleteUser(FragmentCallback<Boolean> fragmentCallback, String email) {
+    public void deleteContenedor(FragmentCallback<Boolean> fragmentCallback, long id) {
         ApiService apiService = ApiClient.getClient("").create(ApiService.class);
-        Call <Void> call = apiService.deleteUser(email);
+        Call <Void> call = apiService.deleteContenedor(id);
 
 
         call.enqueue(new Callback <Void>() {
@@ -143,59 +143,5 @@ public class UserDaoApiImplement implements UserDao {
             }
         });
     }
-
-    /*
-    public List<User> getUsers() {
-        return null;
-    }
-    public User getUser(String email){
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
-        Call <User> call = apiService.getUser(email);
-
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                user = response.body();
-
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-            }
-        });
-        return user;
-    }
-
-    public void getUser(FragmentCallback fragment, String email) {
-        this.fragment = fragment;
-        ApiService apiService = ApiClient.getClient("").create(ApiService.class);
-        Call <User> call = apiService.getUser(email);
-
-
-        call.enqueue(new Callback<User>() {
-            @Override
-            public void onResponse(Call<User> call, Response<User> response) {
-                user = response.body();
-                fragment.callbackDataAcessSuccess(user);
-
-            }
-
-            @Override
-            public void onFailure(Call<User> call, Throwable t) {
-            }
-        });
-    }
-
-    public User insertUser(User user) {
-        return null;
-    }
-
-    public User updateUser(User user) {
-        return null;
-    }
-
-    public boolean deleteUser(String email) {
-        return false;
-    }*/
+    
 }

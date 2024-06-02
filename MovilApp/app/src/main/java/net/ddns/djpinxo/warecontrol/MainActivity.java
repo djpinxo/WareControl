@@ -19,10 +19,15 @@ import androidx.navigation.ui.AppBarConfiguration;
 
 import android.widget.Button;
 
+import net.ddns.djpinxo.warecontrol.data.daos.ContenedorDao;
+import net.ddns.djpinxo.warecontrol.data.daos.ItemDao;
 import net.ddns.djpinxo.warecontrol.data.daos.UserDao;
 import net.ddns.djpinxo.warecontrol.data.daosimplements.api.ApiClient;
+import net.ddns.djpinxo.warecontrol.data.daosimplements.api.ContenedorDaoApiImplement;
+import net.ddns.djpinxo.warecontrol.data.daosimplements.api.ItemDaoApiImplement;
 import net.ddns.djpinxo.warecontrol.data.daosimplements.api.UserDaoApiImplement;
 import net.ddns.djpinxo.warecontrol.data.daosimplements.local.UserDaoLocalBBDDImplements;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.ViewContenedorFragment;
 import net.ddns.djpinxo.warecontrol.ui.user.ViewUserFragment;
 
 public class MainActivity extends AppCompatActivity {
@@ -30,10 +35,14 @@ public class MainActivity extends AppCompatActivity {
     private AppBarConfiguration appBarConfiguration;
 
     public static UserDao userDao;
+    public static ItemDao itemDao;
+    public static ContenedorDao contenedorDao;
 
     public MainActivity(){
         super();
         userDao=new UserDaoApiImplement();
+        itemDao=new ItemDaoApiImplement();
+        contenedorDao=new ContenedorDaoApiImplement();
     }
 
     @Override
@@ -43,7 +52,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         ApiClient.getClient(this);
-        ApiClient.getClient((String)null);
 
         //TODO revisar si esta logado mandar a un controller o a otro
         if (false){
@@ -68,8 +76,8 @@ public class MainActivity extends AppCompatActivity {
             FragmentManager fragmentManager=getSupportFragmentManager();
             FragmentTransaction transaction=fragmentManager.beginTransaction();
             ViewUserFragment viewUserFragment=new ViewUserFragment();
-
-            transaction.add(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
+            ViewContenedorFragment viewContenedorFragment=new ViewContenedorFragment();
+            transaction.add(R.id.LinearLayoutContenedorDeFragment, viewContenedorFragment);
             transaction.commit();
         }
 

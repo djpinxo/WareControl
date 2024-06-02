@@ -22,4 +22,10 @@
     <string name="error_dialog">¡Hubo un error en la operacion!</string>
     <string name="user_inserted_dialog">¡Usuario guardado!</string>
     <string name="required_dialog">es requerido</string>
+    <string name="id">Id</string>
+    <string name="description">Descripcion</string>
+    <string name="dadcontainer">Contenedor padre</string>
+    <string name="contenedor_updated_dialog">¡contenedor actualizado!</string>
+    <string name="contenedor_deleted_dialog">¡contenedor borrado!</string>
+    <string name="contenedor_inserted_dialog">¡contenedor guardado!</string>
 </resources>

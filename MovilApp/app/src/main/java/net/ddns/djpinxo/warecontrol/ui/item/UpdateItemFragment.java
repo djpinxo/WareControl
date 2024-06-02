@@ -1,13 +1,8 @@
-package net.ddns.djpinxo.warecontrol.ui.user;
+package net.ddns.djpinxo.warecontrol.ui.item;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,12 +10,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
-import net.ddns.djpinxo.warecontrol.data.model.User;
+import net.ddns.djpinxo.warecontrol.data.model.Item;
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
-public class UpdateUserFragment extends Fragment implements FragmentCallback<User> {
+public class UpdateItemFragment extends Fragment implements FragmentCallback<Item> {
 
     private EditText editTextNombre;
     private EditText editTextEmail;
@@ -28,18 +27,18 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
     private EditText editTextRepeatPassword;
     private Button buttonUpdate;
     private Button buttonCancel;
-    private static User userModel;
+    private static Item itemModel;
     private boolean isUpdating=false;
 
-    public UpdateUserFragment(){
+    public UpdateItemFragment(){
         super();
     }
-    public UpdateUserFragment (User userModel){
+    public UpdateItemFragment (Item itemModel){
         this();
-        //this.userModel = MainActivity.userDao.getUser(userModel.getEmail());
-        this.userModel=userModel;
+        //this.itemModel = MainActivity.itemDao.getItem(itemModel.getEmail());
+        this.itemModel=itemModel;
         isUpdating=false;
-        MainActivity.userDao.getUser(this, userModel.getEmail());
+        //MainActivity.itemDao.getItem(this, itemModel.getEmail());
 
     }
 
@@ -50,7 +49,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_update_user, container, false);
+        return inflater.inflate(R.layout.fragment_update_item, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -71,7 +70,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
                 builder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
-                        updateUser();
+                        updateItem();
                     }
                 });
 
@@ -86,13 +85,13 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
                 dialog.show();
             }
                 /*((MainActivity)getActivity()).showConfirmationDialog();
-                //registerUser();
-                //TODO corregir si no hay user en bbdd da error
-                userModel = updateUser();
-                if(userModel!=null){
-                    Toast.makeText(getContext(), R.string.user_updated_dialog, Toast.LENGTH_LONG).show();
-                    SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
-                    ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+                //registerItem();
+                //TODO corregir si no hay item en bbdd da error
+                itemModel = updateItem();
+                if(itemModel!=null){
+                    Toast.makeText(getContext(), R.string.item_updated_dialog, Toast.LENGTH_LONG).show();
+                    SelectItemFragment selectItemFragment=new SelectItemFragment(itemModel);
+                    ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
                 }
                 else {
                     Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
@@ -104,18 +103,18 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         buttonCancel.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
-                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+                SelectItemFragment selectItemFragment=new SelectItemFragment(itemModel);
+                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
             }
 
         });
 
         /*
-        editTextEmail.setText(userModel.getEmail());
-        editTextNombre.setText(userModel.getNombre());
-        editTextPassword.setText(userModel.getPassword());*/
+        editTextEmail.setText(itemModel.getEmail());
+        editTextNombre.setText(itemModel.getNombre());
+        editTextPassword.setText(itemModel.getPassword());*/
         //isUpdating=false;
-        //MainActivity.userDao.getUser(this, userModel.getEmail());
+        //MainActivity.itemDao.getItem(this, itemModel.getEmail());
     }
 
     /*public void onDestroyView() {
@@ -124,12 +123,12 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
-        userModel=new User(email,name,password);
+        itemModel=new Item(email,name,password);
     }*/
 
 
 /*
-    private void registerUser() {
+    private void registerItem() {
         String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -155,16 +154,16 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
 
 
         // Llamar a la API para registrar al usuario
-        //userModel = new User(editTextEmail.getText().toString(), editTextNombre.getText().toString(), editTextEmail.getText().toString());
-        userModel = MainActivity.userDao.getUser(editTextEmail.getText().toString());
-        if(userModel!=null) {
-            userModel.setNombre(editTextNombre.getText().toString());
-            userModel.setPassword(editTextPassword.getText().toString());
+        //itemModel = new Item(editTextEmail.getText().toString(), editTextNombre.getText().toString(), editTextEmail.getText().toString());
+        itemModel = MainActivity.itemDao.getItem(editTextEmail.getText().toString());
+        if(itemModel!=null) {
+            itemModel.setNombre(editTextNombre.getText().toString());
+            itemModel.setPassword(editTextPassword.getText().toString());
             Toast.makeText(getContext(), "usuario modificado", Toast.LENGTH_LONG).show();
         }
         /*
         ApiService apiService = RetrofitClient.getClient().create(ApiService.class);
-        Call<Void> call = apiService.registerUser(name, email, password);
+        Call<Void> call = apiService.registerItem(name, email, password);
         call.enqueue(new Callback<Void>() {
             @Override
             public void onResponse(Call<Void> call, Response<Void> response) {
@@ -185,23 +184,23 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
 
     }*/
 
-    private void updateUser(){
+    private void updateItem(){
         String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
 
-        if(validateUserForm()){
-            userModel=new User(email,name,password);
+        if(validateItemForm()){
+            //itemModel=new Item(email,name,password);
             isUpdating=true;
-            MainActivity.userDao.updateUser(this, userModel);
+            MainActivity.itemDao.updateItem(this, itemModel);
         }
         else {
             //Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
         }
     }
 
-    private boolean validateUserForm() {
+    private boolean validateItemForm() {
         String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
@@ -233,15 +232,15 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
     }
 
     @Override
-    public void callbackDataAcessSuccess(User user) {
-        userModel = user;
-        editTextEmail.setText(userModel.getEmail());
-        editTextNombre.setText(userModel.getNombre());
-        editTextPassword.setText(userModel.getPassword());
+    public void callbackDataAcessSuccess(Item item) {
+        itemModel = item;
+        //editTextEmail.setText(itemModel.getEmail());
+        editTextNombre.setText(itemModel.getNombre());
+        //editTextPassword.setText(itemModel.getPassword());
         if(isUpdating) {
-            Toast.makeText(getContext(), R.string.user_updated_dialog, Toast.LENGTH_LONG).show();
-            SelectUserFragment selectUserFragment = new SelectUserFragment(userModel);
-            ((MainActivity) getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
+            //Toast.makeText(getContext(), R.string.item_updated_dialog, Toast.LENGTH_LONG).show();
+            SelectItemFragment selectItemFragment = new SelectItemFragment(itemModel);
+            ((MainActivity) getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectItemFragment);
         }
         else if (!isUpdating) {
             ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
@@ -250,7 +249,7 @@ public class UpdateUserFragment extends Fragment implements FragmentCallback<Use
     }
 
     @Override
-    public void callbackDataAcessError(User user) {
+    public void callbackDataAcessError(Item item) {
         Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
     }
 }

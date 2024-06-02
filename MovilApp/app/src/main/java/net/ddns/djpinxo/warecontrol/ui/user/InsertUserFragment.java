@@ -22,7 +22,7 @@ import net.ddns.djpinxo.warecontrol.data.model.User;
 
 public class InsertUserFragment extends Fragment implements FragmentCallback <User> {
 
-    private EditText editTextName;
+    private EditText editTextNombre;
     private EditText editTextEmail;
     private EditText editTextPassword;
     private EditText editTextRepeatPassword;
@@ -42,7 +42,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        editTextName = view.findViewById(R.id.editTextName);
+        editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
         editTextRepeatPassword = view.findViewById(R.id.editTextRepeatPassword);
@@ -101,7 +101,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
 /*
     private void registerUser() {
-        String name = editTextName.getText().toString().trim();
+        String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
@@ -109,7 +109,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
         //TODO realizar validaciones ventana
 
         if (TextUtils.isEmpty(name)) {
-            editTextName.setError("Nombre es requerido");
+            editTextNombre.setError("Nombre es requerido");
             return;
         }
 
@@ -126,7 +126,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
 
         // Llamar a la API para registrar al usuario
-        userModel = new User(editTextEmail.getText().toString(), editTextName.getText().toString(), editTextEmail.getText().toString());
+        userModel = new User(editTextEmail.getText().toString(), editTextNombre.getText().toString(), editTextEmail.getText().toString());
         if(MainActivity.userDao.getUser(userModel.getEmail())==null){
             MainActivity.userDao.getUsers().add(userModel);
             Toast.makeText(getContext(), "nuevo usuario insetado", Toast.LENGTH_LONG).show();
@@ -155,7 +155,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
     private void insertUser(){
 
-        String name = editTextName.getText().toString().trim();
+        String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
@@ -170,7 +170,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
     }
 
     private boolean validateUserForm(){
-        String name = editTextName.getText().toString().trim();
+        String name = editTextNombre.getText().toString().trim();
         String email = editTextEmail.getText().toString().trim();
         String password = editTextPassword.getText().toString().trim();
         String repeatPassword = editTextRepeatPassword.getText().toString().trim();
@@ -182,7 +182,7 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
             result = false;
         }
         if(name.isEmpty()) {
-            editTextName.setError(R.string.name + " " + R.string.required_dialog);
+            editTextNombre.setError(R.string.name + " " + R.string.required_dialog);
             result = false;
         }
         if(password.isEmpty()) {
@@ -203,14 +203,15 @@ public class InsertUserFragment extends Fragment implements FragmentCallback <Us
 
 
     @Override
-    public void callbackDataAcessSuccess(User object) {
+    public void callbackDataAcessSuccess(User user) {
         Toast.makeText(getContext(), R.string.user_inserted_dialog, Toast.LENGTH_LONG).show();
+        userModel=user;
         SelectUserFragment selectUserFragment=new SelectUserFragment(userModel);
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectUserFragment);
     }
 
     @Override
-    public void callbackDataAcessError(User object) {
+    public void callbackDataAcessError(User user) {
         Toast.makeText(getContext(), R.string.error_dialog, Toast.LENGTH_LONG).show();
     }
 }

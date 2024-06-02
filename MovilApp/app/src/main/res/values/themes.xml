@@ -3,7 +3,17 @@
     <style name="Base.Theme.WareControl" parent="Theme.Material3.DayNight.NoActionBar">
         <!-- Customize your light theme here. -->
         <!-- <item name="colorPrimary">@color/my_light_primary</item> -->
+        <item name="colorPrimary">@color/greenlogo</item>
+
     </style>
 
     <style name="Theme.WareControl" parent="Base.Theme.WareControl" />
+
+    <style name="botonesColorText">
+        <item name="android:tint">@color/m3_default_color_primary_text</item>
+    </style>
+
+    <style name="logoBackGroundAlpha">
+        <item name="android:alpha">0.1</item>
+    </style>
 </resources>

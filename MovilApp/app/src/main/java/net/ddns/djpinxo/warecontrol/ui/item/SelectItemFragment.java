@@ -1,23 +1,22 @@
-package net.ddns.djpinxo.warecontrol.ui.user;
+package net.ddns.djpinxo.warecontrol.ui.item;
 
 import android.os.Bundle;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 
-import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
+
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
-import net.ddns.djpinxo.warecontrol.data.model.User;
+import net.ddns.djpinxo.warecontrol.data.model.Item;
+import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 
-public class SelectUserFragment extends Fragment implements FragmentCallback<User> {
+public class SelectItemFragment extends Fragment implements FragmentCallback<Item> {
 
 
     private EditText editTextNombre;
@@ -26,15 +25,15 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
     private Button buttonUpdate;
     private Button buttonDelete;
     private Button buttonBack;
-    private static User userModel;
+    private static Item itemModel;
 
-    public SelectUserFragment (){
+    public SelectItemFragment (){
         super();
     }
-    public SelectUserFragment (User userModel){
+    public SelectItemFragment (Item itemModel){
         this();
-        this.userModel=userModel;
-        MainActivity.userDao.getUser(this, userModel.getEmail());
+        this.itemModel=itemModel;
+        //MainActivity.itemDao.getItem(this, itemModel.getEmail());
     }
 
     @Override
@@ -44,7 +43,7 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        return inflater.inflate(R.layout.fragment_select_user, container, false);
+        return inflater.inflate(R.layout.fragment_select_item, container, false);
     }
 
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
@@ -58,15 +57,15 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
         buttonUpdate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                UpdateUserFragment updateUserFragment=new UpdateUserFragment(userModel);
-                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, updateUserFragment);
+                UpdateItemFragment updateItemFragment=new UpdateItemFragment(itemModel);
+                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, updateItemFragment);
             }
 
         });
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DeleteUserFragment(userModel).showConfirmationDialog(getActivity());
+                new DeleteItemFragment(itemModel).showConfirmationDialog(getActivity());
             }
 
         });
@@ -74,26 +73,26 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
         buttonBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ViewUserFragment viewUserFragment=new ViewUserFragment();
-                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
+                ViewItemFragment viewItemFragment=new ViewItemFragment();
+                ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewItemFragment);
             }
 
         });
 
-        //MainActivity.userDao.getUser(this, userModel.getEmail());
+        //MainActivity.itemDao.getItem(this, itemModel.getEmail());
     }
 
-    public void callbackDataAcessSuccess(User user){
-        userModel = user;
-        editTextEmail.setText(userModel.getEmail());
-        editTextNombre.setText(userModel.getNombre());
-        editTextPassword.setText(userModel.getPassword());
+    public void callbackDataAcessSuccess(Item item){
+        itemModel = item;
+        //editTextEmail.setText(itemModel.getEmail());
+        editTextNombre.setText(itemModel.getNombre());
+        //editTextPassword.setText(itemModel.getPassword());
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 
-    public void callbackDataAcessError(User user){
-        ViewUserFragment viewUserFragment=new ViewUserFragment();
-        ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
+    public void callbackDataAcessError(Item item){
+        ViewItemFragment viewItemFragment=new ViewItemFragment();
+        ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewItemFragment);
     }
 
 

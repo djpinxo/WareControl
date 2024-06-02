@@ -4,10 +4,13 @@
     <string name="ApiURL" translatable="false">http://djpinxo.ddns.net:81/</string>
     <string name="login">Login</string>
     <string name="register">Register</string>
+    <string name="id">Id</string>
     <string name="email">Email</string>
     <string name="password">Password</string>
     <string name="repeatpassword">Repeat Password</string>
     <string name="name">Name</string>
+    <string name="description">Description</string>
+    <string name="dadcontainer">Dad Container</string>
     <string name="back">Back</string>
     <string name="insert">Insert</string>
     <string name="update">Update</string>
@@ -22,6 +25,9 @@
     <string name="user_inserted_dialog">User is saved!</string>
     <string name="user_updated_dialog">User is updated!</string>
     <string name="user_deleted_dialog">User is deleted!</string>
+    <string name="contenedor_inserted_dialog">Container is saved!</string>
+    <string name="contenedor_updated_dialog">Container is updated!</string>
+    <string name="contenedor_deleted_dialog">Container is deleted!</string>
 
 
 </resources>
