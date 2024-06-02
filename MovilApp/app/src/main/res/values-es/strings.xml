@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">WareControl</string>
+    <string name="login">Acceso</string>
+    <string name="register">Registro</string>
+    <string name="email">Correo</string>
+    <string name="password">Contraseña</string>
+    <string name="logo">Logo</string>
+</resources>
