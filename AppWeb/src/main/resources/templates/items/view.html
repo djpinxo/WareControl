@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Home</title>
+	
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+	
+</head>
+<body>
+
+	<div class="container">
+	    <header class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+	      <div class="col-md-3 mb-2 mb-md-0">
+	        <a href="/home" class="d-inline-flex link-body-emphasis text-decoration-none">
+	          <img class="mb-4" src="/img/logo.svg" alt="" width="72" height="57">
+	        </a>
+	      </div>
+
+	      <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+	        <li><a href="/home" class="nav-link px-2">Home</a></li>
+	        <li th:if="${usuarioLogin!=null and usuarioLogin.admin}"><a href="/usuarios" class="nav-link px-2">Usuarios</a></li>
+	        <li><a href="/contenedores" class="nav-link px-2">Contenedores</a></li>
+	        <li><a href="/items" class="nav-link px-2 link-secondary">Items</a></li>
+	      </ul>
+
+		  <div class="flex-shrink-0 dropdown">
+		            <a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+		              <img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+		            </a>
+		            <ul class="dropdown-menu text-small shadow">
+		              <li><a class="dropdown-item" href="/usuario/update">Gestionar Usuario</a></li>
+		              <li><hr class="dropdown-divider"></li>
+		              <li><a class="dropdown-item" href="/logout">Logout</a></li>
+		            </ul>
+		          </div>
+	    </header>
+
+		<div class="row">
+					<div class="col">
+						<button class="btn btn-primary py-2 w-100" onclick="document.location='/items/insert'">Alta</button>
+					</div>
+		</div>
+		<div id="tablaDatos" class="table-responsive">
+		<table id="myTable" class="table table-striped">
+			<thead>
+				<tr>
+					<th>Id <a role="button" aria-expanded="true" onclick="sortTable(this,0)" class="fa fa-sort"></a></th>
+					<th>Nombre <a role="button" aria-expanded="true" onclick="sortTable(this,0)" class="fa fa-sort"></a></th>
+					<th>Descripcion <a role="button" aria-expanded="true" onclick="sortTable(this,1)" class="fa fa-sort"></a></th>
+					<th>Acciones</th>
+				</tr>
+			</thead>
+			<tbody class="myTable">
+			<tr th:each="item:${items}">
+				<td> <a th:href="${'/items/select/'+item.id}" th:text="${item.id}"></a></td>
+				<td th:text="${item.nombre}"></td>
+				<td th:text="${item.descripcion}"></td>
+				<td class="acciones">
+					
+					
+					<a class="btn" role="button">
+						<i class="bi bi-pencil-fill"></i>
+					</a> 
+							
+					<a class="btn" role="button">
+							<i class="bi bi-trash-fill"></i>
+						</a> 
+						
+					
+					
+					
+				</td>
+			</tr>
+
+			</tbody>
+		</table>
+		</div>
+		<div class="alert alert-danger" role="alert" th:if="${error!=null}" th:text="${error}">
+					</div>
+				    <p/>
+	  </div>
+</body>
+</html>

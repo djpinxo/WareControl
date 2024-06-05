@@ -20,6 +20,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Part;
 import retrofit2.http.Path;
+import retrofit2.http.Query;
 
 public interface ApiService {
     @GET("usuarios")
@@ -37,6 +38,8 @@ public interface ApiService {
 
     @GET("items")
     Call <List<Item>> getItems();
+    @GET("items")
+    Call <List<Item>> getItems(@Query("query") String query);
     @GET("items/{id}")
     Call <Item> getItem(@Path("id") long id);
     @POST("items")
@@ -56,6 +59,8 @@ public interface ApiService {
 
     @GET("contenedores")
     Call <List<Contenedor>> getContenedores();
+    @GET("contenedores")
+    Call <List<Contenedor>> getContenedores(@Query("query") String query);
     @GET("contenedores/{id}")
     Call <Contenedor> getContenedor(@Path("id") long id);
     @POST("contenedores")

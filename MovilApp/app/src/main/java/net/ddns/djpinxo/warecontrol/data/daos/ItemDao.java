@@ -13,6 +13,7 @@ import okhttp3.ResponseBody;
 public interface ItemDao {
 
     public void getItems(FragmentCallback<List<Item>> fragmentCallback);
+    public void getItems(FragmentCallback<List<Item>> fragmentCallback, String query);
     public void getItem(FragmentCallback<Item> fragmentCallback, long id);
     public void insertItem(FragmentCallback<Item> fragmentCallback, Item item);
     public void updateItem(FragmentCallback<Item> fragmentCallback, Item item);

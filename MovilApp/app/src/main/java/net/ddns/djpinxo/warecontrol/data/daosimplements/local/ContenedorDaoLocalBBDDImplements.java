@@ -91,6 +91,11 @@ public class ContenedorDaoLocalBBDDImplements implements ContenedorDao {
     }
 
     @Override
+    public void getContenedores(FragmentCallback<List<Contenedor>> fragmentCallback, String query) {
+
+    }
+
+    @Override
     public void getContenedor(FragmentCallback<Contenedor> fragmentCallback, long id) {
         Thread hilo = new Thread(new Runnable() {
             @Override

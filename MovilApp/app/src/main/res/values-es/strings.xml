@@ -69,4 +69,5 @@
     <string name="childcontainer">Contenedores hijos</string>
     <string name="items">Objetos</string>
     <string name="view">Lista</string>
+    <string name="qrgenerate">QR generado</string>
 </resources>

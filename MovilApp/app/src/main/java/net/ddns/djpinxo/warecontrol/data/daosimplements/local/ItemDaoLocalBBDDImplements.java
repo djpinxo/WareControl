@@ -85,6 +85,11 @@ public class ItemDaoLocalBBDDImplements implements ItemDao {
     }
 
     @Override
+    public void getItems(FragmentCallback<List<Item>> fragmentCallback, String query) {
+
+    }
+
+    @Override
     public void getItem(FragmentCallback<Item> fragmentCallback, long id) {
         Item itemResult = getItem(id);
         if(itemResult != null)

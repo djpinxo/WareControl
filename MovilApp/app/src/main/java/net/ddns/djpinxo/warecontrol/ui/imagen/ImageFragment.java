@@ -1,4 +1,4 @@
-package net.ddns.djpinxo.warecontrol.ui.imagen;
+/*package net.ddns.djpinxo.warecontrol.ui.imagen;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -51,16 +51,12 @@ public class ImageFragment extends Fragment {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
-                    //String imageUrl = "http://tu-servidor:8080/api/imagenes/" + imagenId;
 
                     try {
                         imageView.setImageBitmap(BitmapFactory.decodeByteArray(response.body().bytes(), 0, (int)response.body().contentLength()));
                     } catch (IOException e) {
                         throw new RuntimeException(e);
                     }
-                    /*Glide.with(getContext())
-                            .load(imageUrl)
-                            .into(imageView);*/
                 } else {
                     Toast.makeText(getContext(), "Error al cargar la imagen", Toast.LENGTH_SHORT).show();
                 }
@@ -75,3 +71,4 @@ public class ImageFragment extends Fragment {
         return view;
     }
 }
+*/

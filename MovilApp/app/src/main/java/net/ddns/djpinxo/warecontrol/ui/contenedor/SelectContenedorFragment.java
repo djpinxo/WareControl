@@ -1,10 +1,12 @@
 package net.ddns.djpinxo.warecontrol.ui.contenedor;
 
+import android.graphics.Bitmap;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,8 +14,14 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.google.zxing.qrcode.QRCodeWriter;
 
 import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
@@ -22,10 +30,12 @@ import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 
 public class SelectContenedorFragment extends Fragment implements FragmentCallback<Contenedor> {
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private EditText editTextId;
     private EditText editTextNombre;
     private EditText editTextDescripcion;
     private EditText editTextContenedorPadre;
+    private ImageView imageViewQR;
     private Button buttonUpdate;
     private Button buttonDelete;
     private Button buttonBack;
@@ -53,10 +63,14 @@ public class SelectContenedorFragment extends Fragment implements FragmentCallba
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.contenedor_select_title);
+
+        swipeRefreshLayout = view.findViewById(R.id.SwipeRefreshLayout);
+
         editTextId = view.findViewById(R.id.editTextId);
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
         editTextContenedorPadre = view.findViewById(R.id.editTextContenedorPadre);
+        imageViewQR = view.findViewById(R.id.imageViewQR);
         buttonUpdate = view.findViewById(R.id.buttonUpdate);
         buttonDelete = view.findViewById(R.id.buttonDelete);
         buttonBack = view.findViewById(R.id.buttonBack);
@@ -126,6 +140,14 @@ public class SelectContenedorFragment extends Fragment implements FragmentCallba
             }
         });
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MainActivity.contenedorDao.getContenedor(SelectContenedorFragment.this, contenedorModel.getId());
+
+            }
+        });
+
     }
 
     //crear modal de informacion de contenedor
@@ -158,11 +180,42 @@ public class SelectContenedorFragment extends Fragment implements FragmentCallba
         if(contenedorModel.getContenedorPadre()!=null) {
             editTextContenedorPadre.setText(contenedorModel.getContenedorPadre().getId().toString());
         }
+        else{
+            editTextContenedorPadre.setText(null);
+        }
+        if (swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+        }
+        generateQRCode(contenedor.getId().toString());
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 
     public void callbackDataAcessError(Contenedor contenedor){
+        if(contenedorModel.getContenedorPadre()!=null) {
+            editTextContenedorPadre.setText(contenedorModel.getContenedorPadre().getId().toString());
+        }
+        if (swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+        }
         ViewContenedorFragment viewContenedorFragment=new ViewContenedorFragment();
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewContenedorFragment);
+    }
+
+    private void generateQRCode(String text) {
+        QRCodeWriter writer = new QRCodeWriter();
+        try {
+            BitMatrix bitMatrix = writer.encode(text, BarcodeFormat.QR_CODE, 200, 200);
+            int width = bitMatrix.getWidth();
+            int height = bitMatrix.getHeight();
+            Bitmap bmp = Bitmap.createBitmap(width, height, Bitmap.Config.RGB_565);
+            for (int x = 0; x < width; x++) {
+                for (int y = 0; y < height; y++) {
+                    bmp.setPixel(x, y, bitMatrix.get(x, y) ? 0xFF000000 : 0xFFFFFFFF);
+                }
+            }
+            imageViewQR.setImageBitmap(bmp);
+        } catch (WriterException e) {
+            e.printStackTrace();
+        }
     }
 }

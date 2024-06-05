@@ -28,7 +28,9 @@ import com.google.mlkit.vision.barcode.BarcodeScanning;
 import com.google.mlkit.vision.barcode.common.Barcode;
 import com.google.mlkit.vision.common.InputImage;
 
+import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
+import net.ddns.djpinxo.warecontrol.data.model.Contenedor;
 
 import java.util.concurrent.ExecutionException;
 
@@ -36,6 +38,18 @@ public class ModalScanContenedor extends DialogFragment{
 
     private PreviewView previewView;
     private BarcodeScanner barcodeScanner;
+
+    private boolean isSearch;
+
+    public ModalScanContenedor(){
+        super();
+        this.isSearch=false;
+    }
+
+    public ModalScanContenedor(boolean isSearch){
+        super();
+        this.isSearch=isSearch;
+    }
 
     @Nullable
     @Override
@@ -120,6 +134,10 @@ public class ModalScanContenedor extends DialogFragment{
         }
         if(isNumber && getActivity().findViewById(R.id.editTextContenedorPadre)!=null){
             ((EditText)getActivity().findViewById(R.id.editTextContenedorPadre)).setText(qrData);
+        }
+        if(isSearch && isNumber){
+            SelectContenedorFragment selectContenedorFragment=new SelectContenedorFragment(new Contenedor(Long.valueOf(qrData), null, null, null, null, null));
+            ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, selectContenedorFragment);
         }
     }
 }

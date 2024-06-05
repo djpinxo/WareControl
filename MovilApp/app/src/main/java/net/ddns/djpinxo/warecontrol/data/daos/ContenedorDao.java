@@ -9,6 +9,7 @@ import java.util.List;
 public interface ContenedorDao {
 
     public void getContenedores(FragmentCallback<List<Contenedor>> fragmentCallback);
+    public void getContenedores(FragmentCallback<List<Contenedor>> fragmentCallback, String query);
     public void getContenedor(FragmentCallback<Contenedor> fragmentCallback, long id);
     public void insertContenedor(FragmentCallback<Contenedor> fragmentCallback, Contenedor contenedor);
     public void updateContenedor(FragmentCallback<Contenedor> fragmentCallback, Contenedor contenedor);

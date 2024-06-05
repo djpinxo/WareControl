@@ -70,6 +70,9 @@ public class UsuarioController {
 			if (!usuarioSaved.isEmpty()) {
 				usuario.setEmail(email);
 				usuario.setUpdateDate(new Date());
+				if(!permitSetAdmin(authorizationHeader, usuarioSaved.get())) {
+					usuario.setAdmin(false);
+				}
 				usuarioSaved =Optional.of(usuarioRepository.save(usuario));
 			}
 			return ResponseEntity.ok().body(usuarioSaved);
@@ -114,6 +117,21 @@ public class UsuarioController {
         usuario.setEmail(username);
         usuario.setPassword(password);
         return usuario;
+	}
+	
+	private boolean permitSetAdmin(String authorizationHeader, Usuario usuario) {
+		if (usuario.isAdmin()) {
+			return true;
+		}
+		else {
+			Usuario usuarioAuthorizationHeader  = decodeAuthorizationHeader(authorizationHeader);
+			Optional<Usuario> usuarioSaved = usuarioRepository.findById(usuarioAuthorizationHeader.getEmail());
+			if (usuarioSaved.isPresent() && usuarioSaved.get().isAdmin()) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 }

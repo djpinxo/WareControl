@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,9 +19,11 @@ import net.ddns.djpinxo.warecontrol.ui.FragmentCallback;
 import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.User;
+import net.ddns.djpinxo.warecontrol.ui.item.SelectItemFragment;
 
 public class SelectUserFragment extends Fragment implements FragmentCallback<User> {
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private EditText editTextNombre;
     private EditText editTextEmail;
     private EditText editTextPassword;
@@ -56,6 +59,9 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.user_select_title);
+
+        swipeRefreshLayout = view.findViewById(R.id.SwipeRefreshLayout);
+
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextEmail = view.findViewById(R.id.editTextEmail);
         editTextPassword = view.findViewById(R.id.editTextPassword);
@@ -93,6 +99,14 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
 
         });
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MainActivity.userDao.getUser(SelectUserFragment.this, userModel.getEmail());
+
+            }
+        });
+
         //MainActivity.userDao.getUser(this, userModel.getEmail());
     }
 
@@ -106,10 +120,16 @@ public class SelectUserFragment extends Fragment implements FragmentCallback<Use
         editTextUpdateDate.setText(userModel.getUpdateDate());
         checkBoxActive.setChecked(userModel.isActive());
         checkBoxAdmin.setChecked(userModel.isAdmin());
+        if (swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+        }
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 
     public void callbackDataAcessError(User user){
+        if (swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+        }
         ViewUserFragment viewUserFragment=new ViewUserFragment();
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewUserFragment);
     }

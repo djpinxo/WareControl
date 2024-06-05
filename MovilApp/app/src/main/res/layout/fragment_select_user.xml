@@ -5,218 +5,223 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.user.SelectUserFragment">
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/SwipeRefreshLayout"
         android:layout_height="match_parent"
-        android:padding="16dp">
-
-        <TextView
-            android:id="@+id/textViewNombre"
+        android:layout_width="match_parent"
+        >
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/name"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
+            android:layout_height="match_parent"
+            android:padding="16dp">
 
-        <EditText
-            android:id="@+id/editTextNombre"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/name"
-            android:enabled="false"
-            android:inputType="textPersonName"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/textViewNombre"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/email"
-            app:layout_constraintTop_toBottomOf="@id/editTextNombre"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextEmail"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/email"
-            android:enabled="false"
-            android:inputType="textEmailAddress"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/textViewEmail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/password"
-            app:layout_constraintTop_toBottomOf="@id/editTextEmail"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextPassword"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/password"
-            android:enabled="false"
-            android:inputType="textPassword"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/textViewPassword"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewInsertDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/insertdate"
-            app:layout_constraintTop_toBottomOf="@id/editTextPassword"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextInsertDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/insertdate"
-            android:inputType="datetime"
-            android:enabled="false"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/textViewInsertDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewLastLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/lastlogin"
-            app:layout_constraintTop_toBottomOf="@id/editTextInsertDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextLastLogin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/lastlogin"
-            android:inputType="datetime"
-            android:enabled="false"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/textViewLastLogin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <TextView
-            android:id="@+id/textViewUpdateDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="@string/updatedate"
-            app:layout_constraintTop_toBottomOf="@id/editTextLastLogin"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <EditText
-            android:id="@+id/editTextUpdateDate"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="@string/updatedate"
-            android:inputType="datetime"
-            android:enabled="false"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintTop_toBottomOf="@id/textViewUpdateDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent" />
-
-        <LinearLayout
-            android:id="@+id/linearLayoutCheckTitle"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/editTextUpdateDate"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="0dp">
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/textViewNombre"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:text="@string/active"
-                />
+                android:text="@string/name"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextNombre"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/name"
+                android:enabled="false"
+                android:inputType="textPersonName"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textViewNombre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
             <TextView
-                android:layout_width="0dp"
+                android:id="@+id/textViewEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:textAlignment="center"
-                android:text="@string/admin"
-                />
-        </LinearLayout>
+                android:text="@string/email"
+                app:layout_constraintTop_toBottomOf="@id/editTextNombre"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <LinearLayout
-            android:id="@+id/linearLayoutCheckInputs"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintTop_toBottomOf="@id/linearLayoutCheckTitle"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="8dp">
-            <CheckBox
-                android:id="@+id/checkBoxActive"
-                android:layout_width="0dp"
+            <EditText
+                android:id="@+id/editTextEmail"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:hint="@string/email"
                 android:enabled="false"
-                />
-            <CheckBox
-                android:id="@+id/checkBoxAdmin"
-                android:layout_width="0dp"
+                android:inputType="textEmailAddress"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textViewEmail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewPassword"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:text="@string/password"
+                app:layout_constraintTop_toBottomOf="@id/editTextEmail"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextPassword"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/password"
                 android:enabled="false"
-                />
-        </LinearLayout>
+                android:inputType="textPassword"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textViewPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-        <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_marginBottom="0dp">
+            <TextView
+                android:id="@+id/textViewInsertDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/insertdate"
+                app:layout_constraintTop_toBottomOf="@id/editTextPassword"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
 
-            <Button
-                android:id="@+id/buttonUpdate"
+            <EditText
+                android:id="@+id/editTextInsertDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/insertdate"
+                android:inputType="datetime"
+                android:enabled="false"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textViewInsertDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewLastLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/lastlogin"
+                app:layout_constraintTop_toBottomOf="@id/editTextInsertDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextLastLogin"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/lastlogin"
+                android:inputType="datetime"
+                android:enabled="false"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textViewLastLogin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <TextView
+                android:id="@+id/textViewUpdateDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/updatedate"
+                app:layout_constraintTop_toBottomOf="@id/editTextLastLogin"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <EditText
+                android:id="@+id/editTextUpdateDate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="@string/updatedate"
+                android:inputType="datetime"
+                android:enabled="false"
+                android:layout_marginBottom="8dp"
+                app:layout_constraintTop_toBottomOf="@id/textViewUpdateDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent" />
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCheckTitle"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                android:text="@string/update" />
-            <Button
-                android:id="@+id/buttonDelete"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/editTextUpdateDate"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="0dp">
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:text="@string/active"
+                    />
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:textAlignment="center"
+                    android:text="@string/admin"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/linearLayoutCheckInputs"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                android:text="@string/delete" />
-            <Button
-                android:id="@+id/buttonBack"
+                android:orientation="horizontal"
+                app:layout_constraintTop_toBottomOf="@id/linearLayoutCheckTitle"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="8dp">
+                <CheckBox
+                    android:id="@+id/checkBoxActive"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    />
+                <CheckBox
+                    android:id="@+id/checkBoxAdmin"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:enabled="false"
+                    />
+            </LinearLayout>
+
+            <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:layout_margin="8dp"
-                android:text="@string/view" />
-        </LinearLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+                android:orientation="horizontal"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_marginBottom="0dp">
+
+                <Button
+                    android:id="@+id/buttonUpdate"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    android:text="@string/update" />
+                <Button
+                    android:id="@+id/buttonDelete"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    android:text="@string/delete" />
+                <Button
+                    android:id="@+id/buttonBack"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:layout_margin="8dp"
+                    android:text="@string/view" />
+            </LinearLayout>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 </FrameLayout>

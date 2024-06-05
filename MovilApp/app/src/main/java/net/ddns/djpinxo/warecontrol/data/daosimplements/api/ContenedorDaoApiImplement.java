@@ -47,6 +47,31 @@ public class ContenedorDaoApiImplement implements ContenedorDao {
     }
 
     @Override
+    public void getContenedores(FragmentCallback<List<Contenedor>> fragmentCallback, String query) {
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
+        Call <List<Contenedor>> call = apiService.getContenedores(query);
+
+
+        call.enqueue(new Callback<List<Contenedor>>() {
+            @Override
+            public void onResponse(Call<List<Contenedor>> call, Response<List<Contenedor>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    fragmentCallback.callbackDataAcessSuccess(response.body());
+                }
+                else{
+                    fragmentCallback.callbackDataAcessError(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Contenedor>> call, Throwable t) {
+                Log.w(this.getClass().getName(), t.getMessage());
+                fragmentCallback.callbackDataAcessError(null);
+            }
+        });
+    }
+
+    @Override
     public void getContenedor(FragmentCallback<Contenedor> fragmentCallback, long id) {
         ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <Contenedor> call = apiService.getContenedor(id);

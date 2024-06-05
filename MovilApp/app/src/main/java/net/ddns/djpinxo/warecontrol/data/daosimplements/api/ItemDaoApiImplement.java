@@ -54,6 +54,31 @@ public class ItemDaoApiImplement implements ItemDao {
     }
 
     @Override
+    public void getItems(FragmentCallback<List<Item>> fragmentCallback, String query) {
+        ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
+        Call <List<Item>> call = apiService.getItems(query);
+
+
+        call.enqueue(new Callback<List<Item>>() {
+            @Override
+            public void onResponse(Call<List<Item>> call, Response<List<Item>> response) {
+                if (response.isSuccessful() && response.body() != null) {
+                    fragmentCallback.callbackDataAcessSuccess(response.body());
+                }
+                else{
+                    fragmentCallback.callbackDataAcessError(null);
+                }
+            }
+
+            @Override
+            public void onFailure(Call<List<Item>> call, Throwable t) {
+                Log.w(this.getClass().getName(), t.getMessage());
+                fragmentCallback.callbackDataAcessError(null);
+            }
+        });
+    }
+
+    @Override
     public void getItem(FragmentCallback<Item> fragmentCallback, long id) {
         ApiService apiService = ApiClient.getClient("", MainActivity.userLogin).create(ApiService.class);
         Call <Item> call = apiService.getItem(id);

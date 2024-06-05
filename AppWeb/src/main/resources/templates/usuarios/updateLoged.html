@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Home</title>
+
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+		integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+		crossorigin="anonymous"></script>
+
+</head>
+
+<body>
+
+	<div class="container">
+		<header
+			class="d-flex flex-wrap align-items-center justify-content-center justify-content-md-between py-3 mb-4 border-bottom">
+			<div class="col-md-3 mb-2 mb-md-0">
+				<a href="/home" class="d-inline-flex link-body-emphasis text-decoration-none">
+					<img class="mb-4" src="/img/logo.svg" alt="" width="72" height="57">
+				</a>
+			</div>
+
+			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+				<li><a href="/home" class="nav-link px-2">Home</a></li>
+				<li th:if="${usuarioLogin!=null and usuarioLogin.admin}"><a href="/usuarios" class="nav-link px-2">Usuarios</a></li>
+				<li><a href="/contenedores" class="nav-link px-2">Contenedores</a></li>
+				<li><a href="/items" class="nav-link px-2">Items</a></li>
+			</ul>
+
+			<div class="flex-shrink-0 dropdown">
+				<a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
+					data-bs-toggle="dropdown" aria-expanded="false">
+					<img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+				</a>
+				<ul class="dropdown-menu text-small shadow">
+					<li><a class="dropdown-item" href="/usuario/update">Gestionar Usuario</a></li>
+					<li>
+						<hr class="dropdown-divider">
+					</li>
+					<li><a class="dropdown-item" href="/logout">Logout</a></li>
+				</ul>
+			</div>
+		</header>
+		<form method="post">
+
+			<div>
+				<div class="row">
+					<div class="col">
+						<div class="form-group has-danger">
+							<label class="sr-only" for="nombre">Nombre</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+
+								<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre"
+									required="true" autofocus="true" th:value="${usuario.nombre}"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div>
+				<div class="row">
+					<div class="col">
+						<div class="form-group has-danger">
+							<label class="sr-only" for="email">Email</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+
+								<input type="text" name="email" class="form-control" id="email" placeholder="Email"
+									disabled="disabled" autofocus="true" th:value="${usuario.email}"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div>
+				<div class="row">
+					<div class="col">
+						<div class="form-group has-danger">
+							<label class="sr-only" for="password">Password</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="password" name="password" class="form-control" id="password"
+									placeholder="Password" autofocus="true" th:value="${usuario.password}"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div>
+				<div class="row">
+					<div class="col">
+						<div class="form-group has-danger">
+							<label class="sr-only" for="repeatPassword">Repite Password</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="password" name="repeatPassword" class="form-control" id="repeatPassword"
+									placeholder="Repite Password" autofocus="true" th:value="${usuario.password}"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div>
+				<div class="row">
+					<div class="col">
+						<div class="form-group has-danger">
+							<label class="sr-only" for="insertDate">Fecha alta</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" name="insertDate" class="form-control" id="insertDate"
+									placeholder="Fecha alta" disabled="disabled" autofocus="true" th:value="${usuario.insertDate}"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div>
+				<div class="row">
+					<div class="col">
+						<div class="form-group has-danger">
+							<label class="sr-only" for="lastLogin">Ultimo acceso</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" name="lastLogin" class="form-control" id="lastLogin"
+									placeholder="Ultimo acceso" disabled="disabled" autofocus="true" th:value="${usuario.lastLogin}"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+			<div>
+				<div class="row">
+					<div class="col">
+						<div class="form-group has-danger">
+							<label class="sr-only" for="updateDate">Ultima modificacion</label>
+							<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+								<input type="text" name="updateDate" class="form-control" id="updateDate"
+									placeholder="Ultima modificacion" disabled="disabled" autofocus="true" th:value="${usuario.updateDate}"/>
+							</div>
+						</div>
+					</div>
+
+				</div>
+			</div>
+
+			<div class="row">
+
+				
+				<div class="col">
+					<button class="btn btn-primary py-2 w-100">Modificar</button>
+				</div>
+			</div>
+		</form>
+		<div class="alert alert-danger" role="alert" th:if="${error!=null}" th:text="${error}">
+			</div>
+		    <p/>
+		<div class="row">
+					<div class="col">
+							<button class="btn btn-primary py-2 w-100" onclick="document.location='/usuario/delete'">Eliminar</button>
+						</div>
+						</div>
+	</div>
+
+
+
+</body>
+
+</html>

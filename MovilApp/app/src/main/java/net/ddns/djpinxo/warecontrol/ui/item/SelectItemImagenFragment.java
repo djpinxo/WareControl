@@ -60,5 +60,6 @@ public class SelectItemImagenFragment implements FragmentCallback<ResponseBody> 
     @Override
     public void callbackDataAcessError(ResponseBody responseBody) {
         //Toast.makeText(activity, R.string.error_dialog, Toast.LENGTH_LONG).show();
+        imageView.setImageResource(R.drawable.camara);
     }
 }

@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
@@ -22,9 +23,11 @@ import net.ddns.djpinxo.warecontrol.MainActivity;
 import net.ddns.djpinxo.warecontrol.R;
 import net.ddns.djpinxo.warecontrol.data.model.Item;
 import net.ddns.djpinxo.warecontrol.ui.contenedor.ModalSelectContenedor;
+import net.ddns.djpinxo.warecontrol.ui.contenedor.SelectContenedorFragment;
 
 public class SelectItemFragment extends Fragment implements FragmentCallback<Item> {
 
+    private SwipeRefreshLayout swipeRefreshLayout;
     private EditText editTextId;
     private EditText editTextNombre;
     private EditText editTextDescripcion;
@@ -58,6 +61,9 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         ((TextView)MainActivity.appBar.findViewById(R.id.titleFrame)).setText(R.string.item_select_title);
+
+        swipeRefreshLayout = view.findViewById(R.id.SwipeRefreshLayout);
+
         editTextId = view.findViewById(R.id.editTextId);
         editTextNombre = view.findViewById(R.id.editTextNombre);
         editTextDescripcion = view.findViewById(R.id.editTextDescripcion);
@@ -106,6 +112,14 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
             }
         });
 
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                MainActivity.itemDao.getItem(SelectItemFragment.this, itemModel.getId());
+
+            }
+        });
+
     }
 
     //crear modal de informacion de contenedor
@@ -124,12 +138,21 @@ public class SelectItemFragment extends Fragment implements FragmentCallback<Ite
         if(itemModel.getContenedor()!=null) {
             editTextContenedor.setText(itemModel.getContenedor().getId().toString());
         }
-        //recuperar imagen
+        else{
+            editTextContenedor.setText(null);
+        }
+        if (swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+        }
+        //?? por que solo esta en item pero no en contenedores?
         new SelectItemImagenFragment(itemModel, this.getActivity(), buttonImagen).getItemImagen();
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, this);
     }
 
     public void callbackDataAcessError(Item item){
+        if (swipeRefreshLayout!=null){
+            swipeRefreshLayout.setRefreshing(false);
+        }
         ViewItemFragment viewItemFragment=new ViewItemFragment();
         ((MainActivity)getActivity()).changeFragment(R.id.LinearLayoutContenedorDeFragment, viewItemFragment);
     }

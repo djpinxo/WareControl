@@ -56,6 +56,10 @@ dependencies {
     implementation ("androidx.camera:camera-lifecycle:1.3.3")
     implementation ("androidx.camera:camera-view:1.0.0-alpha29")
     implementation ("androidx.camera:camera-extensions:1.3.3")
+    //swipe refres
+    implementation ("androidx.swiperefreshlayout:swiperefreshlayout:1.1.0")
+    //generar qr
+    implementation ("com.journeyapps:zxing-android-embedded:4.3.0")
     testImplementation(libs.junit)
     androidTestImplementation(libs.ext.junit)
     androidTestImplementation(libs.espresso.core)
