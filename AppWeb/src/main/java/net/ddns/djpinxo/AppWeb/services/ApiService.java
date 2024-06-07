@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
 import org.springframework.stereotype.Service;
 import org.springframework.util.MultiValueMap;
@@ -90,8 +91,8 @@ public class ApiService {
     }
 
     //@Multipart
-    public MultiValueMap<String, Object> getItemImagen(long id) throws Exception {
-    	return restTemplate.getForObject(baseURL+"items/"+id+"/imagen", MultiValueMap.class);
+    public ResponseEntity<byte[]> getItemImagen(long id) throws Exception {
+    	return restTemplate.getForEntity(baseURL+"items/"+id+"/imagen", byte[].class);
     }
 
     public void insertItemImagen(long id, MultiValueMap imagen) throws Exception {

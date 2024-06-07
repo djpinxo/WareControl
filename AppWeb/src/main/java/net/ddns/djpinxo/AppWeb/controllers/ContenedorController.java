@@ -37,6 +37,7 @@ public class ContenedorController {
 			}
 			else {
 				model.addAttribute("contenedores", apiService.getContenedores(query));
+				model.addAttribute("query", query);
 			}
 			
 		}
@@ -56,6 +57,8 @@ public class ContenedorController {
 		if(!SecurityInterceptor.validateSession(session, model))return "redirect:/logout";
 		try{
 			model.addAttribute("contenedor", apiService.getContenedor(id));
+			model.addAttribute("contenedorContenedorhijos", apiService.getContenedorContenedorHijos(id));
+			model.addAttribute("contenedorItems", apiService.getContenedorItems(id));
 			return "contenedores/select";
 		}
 		catch (HttpClientErrorException.Unauthorized e) {

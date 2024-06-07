@@ -1,8 +1,10 @@
 package net.ddns.djpinxo.AppWeb.controllers;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -36,6 +38,7 @@ public class ItemController {
 			}
 			else {
 				model.addAttribute("items", apiService.getItems(query));
+				model.addAttribute("query", query);
 			}
 		}
 		catch (HttpClientErrorException.Unauthorized e) {
@@ -215,21 +218,23 @@ public class ItemController {
 		}
 		return "redirect:/items/view";
 	}
-	/*
-	@GetMapping("/items/{id}/imagen")
-    public ResponseEntity<byte[]> obtenerImagen(@PathVariable Long id) {
-    	Optional <Item> itemSaved = itemRepository.findById(id);
-    	if (itemSaved.isPresent() && itemSaved.get().getImagen()!=null) {
-    		
-    		Imagen imagen = itemSaved.get().getImagen();
-            return ResponseEntity.ok()
-                    .contentType(MediaType.parseMediaType(imagen.getTipo()))
-                    .header(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + imagen.getNombre() + "\"")
-                    .body(imagen.getDatos());
-    	}
-    	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
+	
+	@GetMapping("/items/select/{id}/imagen")
+    public ResponseEntity<byte[]> obtenerImagen(HttpSession session, Model model, @PathVariable Long id) {
+    	
+    	if(!SecurityInterceptor.validateSession(session, model))return null;
+		try{
+			return apiService.getItemImagen(id);
+		}
+		catch (HttpClientErrorException.Unauthorized e) {
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+    	
+    	return null;
     }
-    
+    /*
     @PostMapping("/items/{id}/imagen")
     public ResponseEntity<String> subirImagen(@PathVariable Long id,@RequestPart MultipartFile file) {
     	try {

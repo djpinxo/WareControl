@@ -25,7 +25,8 @@
 
 			<ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
 				<li><a href="/home" class="nav-link px-2">Home</a></li>
-				<li th:if="${usuarioLogin!=null and usuarioLogin.admin}"><a href="/usuarios" class="nav-link px-2">Usuarios</a></li>
+				<li th:if="${usuarioLogin!=null and usuarioLogin.admin}"><a href="/usuarios"
+						class="nav-link px-2">Usuarios</a></li>
 				<li><a href="/contenedores" class="nav-link px-2">Contenedores</a></li>
 				<li><a href="/items" class="nav-link px-2 link-secondary">Items</a></li>
 			</ul>
@@ -33,7 +34,13 @@
 			<div class="flex-shrink-0 dropdown">
 				<a href="#" class="d-block link-body-emphasis text-decoration-none dropdown-toggle"
 					data-bs-toggle="dropdown" aria-expanded="false">
-					<img src="https://github.com/mdo.png" alt="mdo" width="32" height="32" class="rounded-circle">
+					<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" fill="currentColor"
+						class="bi bi-person-circle" viewBox="0 0 16 16">
+						<path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0"></path>
+						<path fill-rule="evenodd"
+							d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1">
+						</path>
+					</svg>
 				</a>
 				<ul class="dropdown-menu text-small shadow">
 					<li><a class="dropdown-item" href="/usuario/update">Gestionar Usuario</a></li>
@@ -45,6 +52,17 @@
 			</div>
 		</header>
 
+
+		<div>
+			<div class="row">
+				<div class="col">
+					<div class="form-group has-danger" style="text-align: center;">
+						<img th:src="${'/items/select/'+item.id+'/imagen'}" alt="imagen Item"
+							style="width: 300px; height: 300px;" />
+					</div>
+				</div>
+			</div>
+		</div>
 		<div>
 			<div class="row">
 				<div class="col">
@@ -53,7 +71,7 @@
 						<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 
 							<input type="text" name="id" class="form-control" id="id" placeholder="Id" required="true"
-								autofocus="true" disabled="disabled" th:value="${item.id}"/>
+								autofocus="true" disabled="disabled" th:value="${item.id}" />
 						</div>
 					</div>
 				</div>
@@ -68,7 +86,7 @@
 						<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 
 							<input type="text" name="nombre" class="form-control" id="nombre" placeholder="Nombre"
-								required="true" autofocus="true" disabled="disabled" th:value="${item.nombre}"/>
+								required="true" autofocus="true" disabled="disabled" th:value="${item.nombre}" />
 						</div>
 					</div>
 				</div>
@@ -83,7 +101,8 @@
 						<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 
 							<input type="text" name="descripcion" class="form-control" id="descripcion"
-								placeholder="descripcion" required="true" autofocus="true" disabled="disabled" th:value="${item.descripcion}"/>
+								placeholder="descripcion" required="true" autofocus="true" disabled="disabled"
+								th:value="${item.descripcion}" />
 						</div>
 					</div>
 				</div>
@@ -97,7 +116,92 @@
 						<label class="sr-only" for="contenedorId">Contenedor</label>
 						<div class="input-group mb-2 mr-sm-2 mb-sm-0">
 							<input type="text" name="contenedorId" class="form-control" id="contenedorId"
-								placeholder="Contenedor" required="true" autofocus="true" disabled="disabled" th:value="${(item.contenedor==null)?item.contenedor:item.contenedor.id}"/>
+								placeholder="Contenedor" required="true" autofocus="true" disabled="disabled"
+								th:value="${(item.contenedor==null)?item.contenedor:item.contenedor.id}" />
+
+							<button th:if="${item.contenedor!=null}" type="button" class="btn btn-primary"
+								data-bs-toggle="modal" data-bs-target="#modalContenedor">
+
+								<svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor"
+									class="bi bi-info-circle-fill" viewBox="0 0 16 16">
+									<path
+										d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m.93-9.412-1 4.705c-.07.34.029.533.304.533.194 0 .487-.07.686-.246l-.088.416c-.287.346-.92.598-1.465.598-.703 0-1.002-.422-.808-1.319l.738-3.468c.064-.293.006-.399-.287-.47l-.451-.081.082-.381 2.29-.287zM8 5.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2" />
+								</svg>
+							</button>
+
+							<!--inicio modal-->
+							<div th:if="${item.contenedor!=null}" class="modal" tabindex="-1" id="modalContenedor">
+								<div class="modal-dialog">
+									<div class="modal-content">
+										<div class="modal-header">
+											<h5 class="modal-title">Contenedor</h5>
+											<button type="button" class="btn-close" data-bs-dismiss="modal"
+												aria-label="Close"></button>
+										</div>
+										<div class="modal-body">
+											<div>
+												<div class="row">
+													<div class="col">
+														<div class="form-group has-danger">
+															<label class="sr-only" for="id">Id</label>
+															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+
+																<input type="text" name="id" class="form-control"
+																	id="id" placeholder="Id" required="true"
+																	autofocus="true" disabled="disabled"
+																	th:value="${item.contenedor.id}" />
+															</div>
+														</div>
+													</div>
+
+												</div>
+											</div>
+											<div>
+												<div class="row">
+													<div class="col">
+														<div class="form-group has-danger">
+															<label class="sr-only" for="nombre">Nombre</label>
+															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+
+																<input type="text" name="nombre" class="form-control"
+																	id="nombre" placeholder="Nombre" required="true"
+																	autofocus="true" disabled="disabled"
+																	th:value="${item.contenedor.nombre}" />
+															</div>
+														</div>
+													</div>
+
+												</div>
+											</div>
+											<div>
+												<div class="row">
+													<div class="col">
+														<div class="form-group has-danger">
+															<label class="sr-only" for="descripcion">Descripcion</label>
+															<div class="input-group mb-2 mr-sm-2 mb-sm-0">
+
+																<input type="text" name="descripcion"
+																	class="form-control" id="descripcion"
+																	placeholder="descripcion" required="true"
+																	autofocus="true" disabled="disabled"
+																	th:value="${item.contenedor.descripcion}" />
+															</div>
+														</div>
+													</div>
+
+												</div>
+											</div>
+										</div>
+										<div class="modal-footer">
+											<button type="button" class="btn btn-primary"
+												data-bs-dismiss="modal">Close</button>
+										</div>
+									</div>
+								</div>
+							</div>
+
+
+							<!--fin modal-->
 						</div>
 					</div>
 				</div>
@@ -121,8 +225,8 @@
 			</div>
 		</div>
 		<div class="alert alert-danger" role="alert" th:if="${error!=null}" th:text="${error}">
-					</div>
-				    <p/>
+		</div>
+		<p />
 	</div>
 
 
