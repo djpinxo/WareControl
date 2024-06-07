@@ -13,19 +13,15 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import net.ddns.djpinxo.dtos.ContenedorDTO;
 import net.ddns.djpinxo.models.Contenedor;
 import net.ddns.djpinxo.models.Item;
 import net.ddns.djpinxo.repositories.ContenedorRepository;
-import net.ddns.djpinxo.services.ContenedorService;
 
 @RestController
 public class ContenedorController {
 
 	@Autowired
 	ContenedorRepository contenedorRepository;
-	//@Autowired
-	//ContenedorService contenedorService;
 
 	@GetMapping("/contenedores")
 	public List<Contenedor> getContenedores(@RequestParam(required = false) String query) {
@@ -87,41 +83,5 @@ public class ContenedorController {
 		}
 		return null;
 	}
-
-	/*
-	@GetMapping("/contenedores")
-	public List<ContenedorDTO> getContenedores() {
-		return contenedorService.findAll();
-	}
-
-	@GetMapping("/contenedores/{id}")
-	public ContenedorDTO getContenedor(@PathVariable Long id) {
-		return contenedorService.findById(id);
-	}
-
-	@PostMapping("/contenedores")
-	public ContenedorDTO postContenedor(@RequestBody ContenedorDTO contenedorDTO) {
-		ContenedorDTO contenedorSaved = contenedorService.findById(contenedorDTO.getId());
-		if (contenedorSaved==null) {
-			return contenedorService.save(contenedorDTO);
-		}
-		else return null;
-	}
-
-	@PutMapping("/contenedores/{id}")
-	public ContenedorDTO putContenedor(@RequestBody ContenedorDTO contenedor,@PathVariable Long id) {
-		ContenedorDTO contenedorSaved = contenedorService.findById(id);
-		if (contenedorSaved!=null) {
-			contenedor.setId(id);
-			contenedorSaved = contenedor;
-			contenedorService.save(contenedor);
-		}
-		return contenedorSaved;
-	}
-	
-	@DeleteMapping("/contenedores/{id}")
-	public void deleteContenedor(@PathVariable Long id) {
-		contenedorService.deleteById(id);
-	}*/
 
 }

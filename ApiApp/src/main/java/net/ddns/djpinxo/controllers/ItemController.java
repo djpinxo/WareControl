@@ -20,22 +20,16 @@ import org.springframework.web.bind.annotation.RequestPart;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import net.ddns.djpinxo.dtos.DTOMapper;
-import net.ddns.djpinxo.dtos.ItemDTO;
 import net.ddns.djpinxo.models.Imagen;
 import net.ddns.djpinxo.models.Item;
 import net.ddns.djpinxo.repositories.ImagenRepository;
 import net.ddns.djpinxo.repositories.ItemRepository;
-import net.ddns.djpinxo.services.ContenedorService;
-import net.ddns.djpinxo.services.ItemService;
 
 @RestController
 public class ItemController {
 
 	@Autowired
 	ItemRepository itemRepository;
-	@Autowired
-	ItemService itemService;
 
 	@GetMapping("/items")
 	public List<Item> getItems(@RequestParam(required = false) String query) {
@@ -123,41 +117,5 @@ public class ItemController {
 		}
     	return ResponseEntity.status(HttpStatus.NOT_FOUND).body(null);
     }
-    
-	
-	/*
-	@GetMapping("/items")
-	public List<ItemDTO> getItems() {
-		return itemService.findAll();
-	}
-
-	@GetMapping("/items/{id}")
-	public ItemDTO getItem(@PathVariable Long id) {
-		return itemService.findById(id);
-	}
-
-	@PostMapping("/items")
-	public ItemDTO postItem(@RequestBody ItemDTO itemDTO) {
-		ItemDTO itemSaved = itemService.findById(itemDTO.getId());
-		if (itemSaved==null) {
-			return itemService.save(itemDTO);
-		}
-		else return null;
-	}
-
-	@PutMapping("/items/{id}")
-	public ItemDTO putItem(@RequestBody ItemDTO itemDTO,@PathVariable Long id) {
-		ItemDTO itemSaved = itemService.findById(id);
-		if (itemSaved!=null) {
-			itemDTO.setId(id);
-			itemSaved = itemService.save(itemDTO);
-		}
-		return itemSaved;
-	}
-	
-	@DeleteMapping("/items/{id}")
-	public void deleteItem(@PathVariable Long id) {
-		itemService.deleteById(id);
-	}*/
 
 }
